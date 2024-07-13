@@ -64,6 +64,9 @@ flutter:
     - images/fb.png
     - images/google.png
     - images/govt.png
+    - images/admin_icon.png
+    - images/police_icon.png
+    - images/user_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
