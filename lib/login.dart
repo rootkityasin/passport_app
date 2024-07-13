@@ -85,19 +85,16 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 40),
                 const Text(
-                  'Sign in to your             Account',
+                  'Sign in to your Account',
                   style: TextStyle(
-                    fontSize: 35,
+                    fontSize: 29,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 10),
                 const Text(
                   'Choose Role',
-                  style: TextStyle(fontSize: 20,
-                   color: Color.fromARGB(186, 24, 140, 185),
-                   fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, color: Colors.grey),
                 ),
                 const SizedBox(height: 20),
                 Row(
