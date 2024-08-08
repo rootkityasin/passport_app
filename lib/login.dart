@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'user_dashboard.dart';
+import 'police_dashboard.dart'; // Create this file
+import 'admin_dashboard.dart';  // Create this file
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -50,6 +53,29 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
+  }
+
+  void _login() {
+    switch (_selectedRole) {
+      case 'User':
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const UserDashboard(key: ValueKey('user_dashboard'))),
+        );
+        break;
+      case 'Admin':
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AdminDashboard(key: ValueKey('admin_dashboard'))),
+        );
+        break;
+      case 'Police Officer':
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const PoliceDashboard(key: ValueKey('police_dashboard'))),
+        );
+        break;
+      }
   }
 
   @override
@@ -166,9 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // Handle the login logic based on the role and provided information
-                    },
+                    onPressed: _login,  // Updated
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                       shape: RoundedRectangleBorder(
