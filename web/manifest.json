@@ -1,6 +1,6 @@
 {
-    "name": "passport_app",
-    "short_name": "passport_app",
+    "name": "pms_flutter_app",
+    "short_name": "pms_flutter_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

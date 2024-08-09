@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "passport_app" "\0"
+            VALUE "FileDescription", "pms_flutter_app" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "passport_app" "\0"
+            VALUE "InternalName", "pms_flutter_app" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "passport_app.exe" "\0"
-            VALUE "ProductName", "passport_app" "\0"
+            VALUE "OriginalFilename", "pms_flutter_app.exe" "\0"
+            VALUE "ProductName", "pms_flutter_app" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
