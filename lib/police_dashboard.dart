@@ -226,7 +226,7 @@ class PoliceDashboardState extends State<PoliceDashboard> {
 }
 
 class PoliceDashboardPage extends StatefulWidget {
-  const PoliceDashboardPage({Key? key}) : super(key: key);
+  const PoliceDashboardPage({super.key});
 
   @override
   PoliceDashboardPageState createState() => PoliceDashboardPageState();
