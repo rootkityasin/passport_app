@@ -55,7 +55,8 @@ class AdminDashboardState extends State<AdminDashboard> {
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: Colors.grey[200], // Background color of the search bar
+                fillColor:
+                    Colors.grey[200], // Background color of the search bar
               ),
             ),
             const SizedBox(height: 50), // Increased height to lower the cards
@@ -108,7 +109,7 @@ class AdminDashboardState extends State<AdminDashboard> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, 
+        type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: _selectedIndex == 0
@@ -123,7 +124,8 @@ class AdminDashboardState extends State<AdminDashboard> {
                           color: Colors.green, // Color for selected item
                         ),
                       ),
-                      const Icon(Icons.home, color: Colors.black), // Icon for home
+                      const Icon(Icons.home,
+                          color: Colors.black), // Icon for home
                     ],
                   )
                 : const Icon(Icons.home, color: Colors.black), // Icon for home
@@ -142,10 +144,12 @@ class AdminDashboardState extends State<AdminDashboard> {
                           color: Colors.green, // Color for selected item
                         ),
                       ),
-                      const Icon(Icons.search, color: Colors.black), // Icon for search
+                      const Icon(Icons.search,
+                          color: Colors.black), // Icon for search
                     ],
                   )
-                : const Icon(Icons.search, color: Colors.black), // Icon for search
+                : const Icon(Icons.search,
+                    color: Colors.black), // Icon for search
             label: '',
           ),
           BottomNavigationBarItem(
@@ -161,10 +165,12 @@ class AdminDashboardState extends State<AdminDashboard> {
                           color: Colors.green, // Color for selected item
                         ),
                       ),
-                      const Icon(Icons.account_circle, color: Colors.black), // Icon for account
+                      const Icon(Icons.account_circle,
+                          color: Colors.black), // Icon for account
                     ],
                   )
-                : const Icon(Icons.account_circle, color: Colors.black), // Icon for account
+                : const Icon(Icons.account_circle,
+                    color: Colors.black), // Icon for account
             label: '',
           ),
         ],
@@ -178,7 +184,9 @@ class AdminDashboardState extends State<AdminDashboard> {
     );
   }
 
-  Widget _buildAnimatedCard(String title, String subtitle, IconData icon, Color iconColor, VoidCallback onPressed, {Color textColor = Colors.white}) {
+  Widget _buildAnimatedCard(String title, String subtitle, IconData icon,
+      Color iconColor, VoidCallback onPressed,
+      {Color textColor = Colors.white}) {
     return Card(
       color: const Color(0xFFD9D9D9), // Set the card color
       child: Padding(
@@ -193,7 +201,8 @@ class AdminDashboardState extends State<AdminDashboard> {
                 Expanded(
                   child: Text(
                     title,
-                    style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 17, fontWeight: FontWeight.bold),
                     softWrap: true,
                   ),
                 ),
@@ -207,10 +216,13 @@ class AdminDashboardState extends State<AdminDashboard> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF186343), // Background color
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                    borderRadius:
+                        BorderRadius.circular(12.0), // Rounded corners
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0), // Increase padding
-                  textStyle: const TextStyle(fontSize: 16), // Increase font size
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 24.0), // Increase padding
+                  textStyle:
+                      const TextStyle(fontSize: 16), // Increase font size
                 ),
                 child: Text(
                   subtitle,

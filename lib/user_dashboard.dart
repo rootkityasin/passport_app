@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class UserDashboard extends StatefulWidget {
-  const UserDashboard({required Key key}) : super(key: key);
+  final token;
+  const UserDashboard({@required this.token, Key? key}) : super(key: key);
 
   @override
   _UserDashboardState createState() => _UserDashboardState();
 }
 
 class _UserDashboardState extends State<UserDashboard> {
+  late String email;
+  @override
+  void initState() {
+    super.initState();
+    Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
+
+    email = jwtDecodedToken['email'];
+  }
+
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -44,25 +55,26 @@ class _UserDashboardState extends State<UserDashboard> {
               decoration: InputDecoration(
                 prefixIcon: const Icon(
                   Icons.search,
-                  color: Colors.black54, 
+                  color: Colors.black54,
                 ),
                 hintText: 'Search for something',
                 hintStyle: const TextStyle(
-                  color: Colors.black54, 
+                  color: Colors.black54,
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: Colors.grey[200], // Background color of the search bar
+                fillColor:
+                    Colors.grey[200], // Background color of the search bar
               ),
             ),
             const SizedBox(height: 20),
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
-                crossAxisSpacing: 16.0,  //space between cards
+                crossAxisSpacing: 16.0, //space between cards
                 mainAxisSpacing: 16.0,
                 children: [
                   _buildAnimatedCard(
@@ -197,49 +209,55 @@ class _UserDashboardState extends State<UserDashboard> {
     );
   }
 
- Widget _buildAnimatedCard(String title, String subtitle, IconData icon, Color iconColor, VoidCallback onPressed, {Color textColor = Colors.white}) {
-  return Card(
-    color: const Color(0xFFD9D9D9), // Set the card color
-    child: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(icon, color: iconColor, size: 35), // Icon size
-              const SizedBox(width: 20),   // Space between icon and title
-              Expanded(
+  Widget _buildAnimatedCard(String title, String subtitle, IconData icon,
+      Color iconColor, VoidCallback onPressed,
+      {Color textColor = Colors.white}) {
+    return Card(
+      color: const Color(0xFFD9D9D9), // Set the card color
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, color: iconColor, size: 35), // Icon size
+                const SizedBox(width: 20), // Space between icon and title
+                Expanded(
+                  child: Text(
+                    title, // Card title
+                    style: const TextStyle(
+                        fontSize: 22, fontWeight: FontWeight.bold),
+                    softWrap: true,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            const Spacer(), // Pushes the button to the bottom
+            Center(
+              child: ElevatedButton(
+                onPressed: onPressed, // Handle button press
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF186343), // Background color
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(12.0), // Rounded corners
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 24.0), // Increase padding
+                  textStyle:
+                      const TextStyle(fontSize: 16), // Increase font size
+                ),
                 child: Text(
-                  title, // Card title
-                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  softWrap: true,
+                  subtitle, // Card subtitle
+                  style: TextStyle(color: textColor), // Custom font color
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          const Spacer(), // Pushes the button to the bottom
-          Center(
-            child: ElevatedButton(
-              onPressed: onPressed, // Handle button press
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF186343), // Background color
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0), // Rounded corners
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0), // Increase padding
-                textStyle: const TextStyle(fontSize: 16), // Increase font size
-              ),
-              child: Text(
-                subtitle, // Card subtitle
-                style: TextStyle(color: textColor), // Custom font color
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
- }
+    );
+  }
 }
