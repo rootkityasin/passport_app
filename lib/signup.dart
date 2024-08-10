@@ -5,7 +5,7 @@ import 'package:pms_flutter_app/config.dart';
 import 'package:pms_flutter_app/login.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+  const SignUpPage({super.key});
 
   @override
   _SignUpPageState createState() => _SignUpPageState();
@@ -97,7 +97,7 @@ class _SignUpPageState extends State<SignUpPage> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => LoginPage())
+            builder: (context) => const LoginPage())
     );
   }
 
