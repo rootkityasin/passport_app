@@ -2,12 +2,15 @@
 const app = require('./app');
 const db = require('./config/db');
 const userModel = require('./model/user.model');
-const port = 8000;
+const PORT = 3000;
+const cors = require('cors');
+
+app.use(cors());
 
 app.get('/', (req, res) => {
      res.send("Hello World");
 });
 
-app.listen(port, 'localhost', () => {
-     console.log(`Server Listening on Port http://localhost:${port}`);
+app.listen(PORT,'localhost', () => {
+     console.log(`Server Listening on Port http://localhost:${PORT}`);
 });

@@ -70,19 +70,23 @@ class _SignUpPageState extends State<SignUpPage> {
         "password": _passwordController.text,
       };
 
-      final response = await http.post(
-        Uri.parse(registration),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(user),
-      );
+      try {
+        final response = await http.post(
+          Uri.parse(registration),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(user),
+        );
 
-      if (!mounted) return;
+        if (!mounted) return;
 
-      if (response.statusCode == 200) {
-        _showSnackBar('Registered Successfully');
-        _navigateToLogin();
-      } else {
-        _showSnackBar('Registration Failed');
+        if (response.statusCode == 200) {
+          _showSnackBar('Registered Successfully');
+          _navigateToLogin();
+        } else {
+          _showSnackBar('Registration Failed: ${response.statusCode}');
+        }
+      } catch (e) {
+        _showSnackBar('An error occurred: $e');
       }
     }
   }
@@ -95,10 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void _navigateToLogin() {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const LoginPage())
-    );
+        context, MaterialPageRoute(builder: (context) => const LoginPage()));
   }
 
   Widget _roleIcon(String role, String assetPath) {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
+import 'login.dart';
+
 class UserDashboard extends StatefulWidget {
   final token;
   const UserDashboard({@required this.token, super.key});
@@ -32,11 +34,14 @@ class _UserDashboardState extends State<UserDashboard> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            // Handle menu button press
-          },
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              // Handle menu button press
+              Scaffold.of(context).openDrawer();
+            },
+          ),
         ),
         actions: [
           IconButton(
@@ -46,6 +51,91 @@ class _UserDashboardState extends State<UserDashboard> {
             },
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const UserAccountsDrawerHeader(
+              accountName: Text("Parvez"),
+              accountEmail: Text("UI / UX ENGINEER"),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage('images/govt.png'),
+              ),
+              decoration: BoxDecoration(
+                color: Colors.teal, // Background color of the header
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.dashboard),
+              title: const Text('Dashboard'),
+              onTap: () {
+                // Handle Dashboard tap
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.doorbell),
+              title: const Text('Notification'),
+              onTap: () {
+                // Handle myOrders tap
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.schedule),
+              title: const Text('Passport Status'),
+              onTap: () {
+                // Handle Schedules tap
+              },
+            ),
+            ExpansionTile(
+              leading: const Icon(Icons.work),
+              title: const Text('Services'),
+              children: <Widget>[
+                ListTile(
+                  title: const Text('Reissue Passport'),
+                  onTap: () {
+                    // Handle Reissue Passport tap
+                  },
+                ),
+                ListTile(
+                  title: const Text('Report Lost/Stolen Passport'),
+                  onTap: () {
+                    // Handle Report Lost/Stolen Passport tap
+                  },
+                ),
+                ListTile(
+                  title: const Text('Contact Counceller'),
+                  onTap: () {
+                    // Handle Contact Counceller tap
+                  },
+                ),
+              ],
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () {
+                // Handle Settings tap
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.help),
+              title: const Text('Help'),
+              onTap: () {
+                // Handle Help tap
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout Account'),
+              onTap: () {
+                // Handle Logout tap
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LoginPage()));
+              },
+            ),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
