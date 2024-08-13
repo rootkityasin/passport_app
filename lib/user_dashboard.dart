@@ -45,7 +45,7 @@ class _UserDashboardState extends State<UserDashboard> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.person),
+            icon: const Icon(Icons.doorbell),
             onPressed: () {
               // Handle profile icon press
             },
@@ -250,27 +250,27 @@ class _UserDashboardState extends State<UserDashboard> {
                 : const Icon(Icons.credit_card, color: Colors.black),
             label: '',
           ),
+          // BottomNavigationBarItem(
+          //   icon: _selectedIndex == 2
+          //       ? Stack(
+          //           alignment: Alignment.center,
+          //           children: [
+          //             Container(
+          //               width: 40,
+          //               height: 40,
+          //               decoration: const BoxDecoration(
+          //                 shape: BoxShape.circle,
+          //                 color: Colors.green,
+          //               ),
+          //             ),
+          //             const Icon(Icons.person, color: Colors.black),
+          //           ],
+          //         )
+          //       : const Icon(Icons.person, color: Colors.black),
+          //   label: '',
+          // ),
           BottomNavigationBarItem(
             icon: _selectedIndex == 2
-                ? Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.green,
-                        ),
-                      ),
-                      const Icon(Icons.person, color: Colors.black),
-                    ],
-                  )
-                : const Icon(Icons.person, color: Colors.black),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: _selectedIndex == 3
                 ? Stack(
                     alignment: Alignment.center,
                     children: [
