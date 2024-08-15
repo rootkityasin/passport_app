@@ -10,7 +10,7 @@ exports.register = async (req, res, next) => {
 
           const police = await PoliceService.registerPolice({ fname, lname, email, dob, phone, pid, password });
 
-          res.json({ status: true, success: 'User Registered Successfully', police });
+          res.json({ status: true, success: 'Police Registered Successfully', police });
      } catch (error) {
           res.status(500).json({ status: false, message: error.message });
      }
@@ -22,9 +22,9 @@ exports.login = async (req, res, next) => {
           const { pid, password } = req.body;
 
           let police = await PoliceService.checkPolice(pid);
-          console.log("----------user-----------",police);
+          console.log("----------Police-----------",police);
           if (!police) {
-               throw new Error('User does not exist');
+               throw new Error('Police does not exist');
           }
 
           const isPasswordCorrect = await police.comparePassword(password);
