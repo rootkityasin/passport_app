@@ -9,8 +9,8 @@ class ReissuePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Reissue or Renew'),
       ),
-      body: Center(
-        child: const Text('This is the Reissue Page'),
+      body: const Center(
+        child: Text('This is the Reissue Page'),
       ),
     );
   }

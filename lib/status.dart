@@ -9,8 +9,8 @@ class StatusPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Check Your Status'),
       ),
-      body: Center(
-        child: const Text('This is the Status Page'),
+      body: const Center(
+        child: Text('This is the Status Page'),
       ),
     );
   }

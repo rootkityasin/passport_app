@@ -9,8 +9,8 @@ class MissingLostPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Report Lost or Stolen'),
       ),
-      body: Center(
-        child: const Text('This is the Missing/Lost Page'),
+      body: const Center(
+        child: Text('This is the Missing/Lost Page'),
       ),
     );
   }

@@ -31,6 +31,7 @@ class _ApplyPageState extends State<ApplyPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Start New Application'),
+        backgroundColor: const Color.fromARGB(122, 76, 175, 79), // Change AppBar color to green
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -77,6 +78,7 @@ class _ApplyPageState extends State<ApplyPage> {
                       ],
                     ),
                     isActive: currentStep >= 1,
+                    state: currentStep > 1 ? StepState.complete : StepState.indexed,
                   ),
                   Step(
                     title: const Text('Personal Information'),
@@ -84,9 +86,7 @@ class _ApplyPageState extends State<ApplyPage> {
                       children: [
                         _buildTextField('National ID No'),
                         _buildTextField('Birth Registration'),
-                        _buildTextField('Type Of Citizen'),
-                        _buildTextField('Dual Citizenship Status'),
-                        _buildDropdownField('Country Of Other Citizenship', countries, null),
+                        _buildDropdownField('Country Of Other Citizenship (If Any)', countries, null),
                         _buildTextField('Foreign Passport No'),
                         _buildTextField('Marital Status'),
                         _buildTextField('Profession'),
@@ -95,6 +95,7 @@ class _ApplyPageState extends State<ApplyPage> {
                       ],
                     ),
                     isActive: currentStep >= 2,
+                    state: currentStep > 2 ? StepState.complete : StepState.indexed,
                   ),
                   Step(
                     title: const Text('Present Address'),
@@ -110,6 +111,7 @@ class _ApplyPageState extends State<ApplyPage> {
                       ],
                     ),
                     isActive: currentStep >= 3,
+                    state: currentStep > 3 ? StepState.complete : StepState.indexed,
                   ),
                   Step(
                     title: const Text('Permanent Address'),
@@ -125,6 +127,7 @@ class _ApplyPageState extends State<ApplyPage> {
                       ],
                     ),
                     isActive: currentStep >= 4,
+                    state: currentStep > 4 ? StepState.complete : StepState.indexed,
                   ),
                   Step(
                     title: const Text('Payment'),
@@ -135,6 +138,7 @@ class _ApplyPageState extends State<ApplyPage> {
                       ],
                     ),
                     isActive: currentStep >= 5,
+                    state: currentStep > 5 ? StepState.complete : StepState.indexed,
                   ),
                 ],
                 onStepContinue: () {
@@ -160,6 +164,9 @@ class _ApplyPageState extends State<ApplyPage> {
                       if (currentStep < 5)
                         ElevatedButton(
                           onPressed: controls.onStepContinue,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green, // Change button color to green
+                          ),
                           child: const Text('Next'),
                         ),
                       if (currentStep == 5)
@@ -186,134 +193,157 @@ class _ApplyPageState extends State<ApplyPage> {
   }
 
   Widget _buildTextField(String labelText) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: TextField(
-        decoration: InputDecoration(
-          labelText: labelText,
-          border: OutlineInputBorder(),
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 9.0),
+    child: TextField(
+      decoration: InputDecoration(
+        labelText: labelText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0), // More rounded corners
         ),
+        contentPadding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0), // Smaller height
+        filled: true,
+        fillColor: const Color.fromARGB(255, 255, 255, 255), // Background color set to white
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildDatePickerField(String labelText) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: InkWell(
-        onTap: () async {
-          DateTime? pickedDate = await showDatePicker(
-            context: context,
-            initialDate: selectedDate ?? DateTime.now(),
-            firstDate: DateTime(1900),
-            lastDate: DateTime.now(),
-          );
-          if (pickedDate != null) {
-            setState(() {
-              selectedDate = pickedDate;
-            });
-          }
-        },
-        child: InputDecorator(
-          decoration: InputDecoration(
-            labelText: labelText,
-            border: OutlineInputBorder(),
-          ),
-          child: Text(
-            selectedDate != null ? selectedDate!.toLocal().toString().split(' ')[0] : 'Select Date',
-            style: TextStyle(color: selectedDate != null ? Colors.black : Colors.grey),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDropdownField(String labelText, List<String> items, String? initialValue) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 9.0),
+    child: InkWell(
+      onTap: () async {
+        DateTime? pickedDate = await showDatePicker(
+          context: context,
+          initialDate: selectedDate ?? DateTime.now(),
+          firstDate: DateTime(1900),
+          lastDate: DateTime.now(),
+        );
+        if (pickedDate != null) {
+          setState(() {
+            selectedDate = pickedDate;
+          });
+        }
+      },
       child: InputDecorator(
         decoration: InputDecoration(
           labelText: labelText,
-          border: OutlineInputBorder(),
-        ),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            value: initialValue == 'Bangladesh' ? 'Bangladesh' : (labelText == 'Country Of Birth' ? selectedCountry : selectedDistrict),
-            isDense: true,
-            onChanged: (String? newValue) {
-              setState(() {
-                if (labelText == 'Country Of Birth' || labelText == 'Country') {
-                  selectedCountry = newValue;
-                } else {
-                  selectedDistrict = newValue;
-                }
-              });
-            },
-            items: items.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.0), // More rounded corners
           ),
+          contentPadding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0), // Smaller height
+          filled: true,
+          fillColor: const Color.fromARGB(255, 255, 255, 255), // Background color set to white
+        ),
+        child: Text(
+          selectedDate != null ? selectedDate!.toLocal().toString().split(' ')[0] : 'Select Date',
+          style: TextStyle(color: selectedDate != null ? Colors.black : Colors.grey),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _buildRadioButtonField(String labelText, List<String> options) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(labelText, style: TextStyle(fontSize: 16)),
-          ...options.map((option) => RadioListTile<String>(
-                title: Text(option),
-                value: option,
-                groupValue: selectedGender,
-                onChanged: (String? value) {
-                  setState(() {
-                    selectedGender = value;
-                  });
-                },
-                activeColor: Colors.green, // Use green color for radio button
-              )),
-        ],
+  Widget _buildDropdownField(String labelText, List<String> items, String? initialValue) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 9.0, top: 16.0), // Added top padding to start a bit lower
+    child: InputDecorator(
+      decoration: InputDecoration(
+        labelText: labelText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0), // More rounded corners
+        ),
+        contentPadding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0), // Smaller height
+        filled: true,
+        fillColor: const Color.fromARGB(255, 255, 255, 255), // Background color set to white
       ),
-    );
-  }
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: initialValue,
+          isDense: true,
+          onChanged: (String? newValue) {
+            setState(() {
+              initialValue = newValue;
+            });
+          },
+          items: items.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+        ),
+      ),
+    ),
+  );
+}
+  Widget _buildRadioButtonField(String labelText, List<String> options) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 8.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(labelText, style: const TextStyle(fontSize: 16)),
+        Row(
+          children: options.map((option) {
+            return Row(
+              children: [
+                Radio<String>(
+                  value: option,
+                  groupValue: selectedGender,
+                  activeColor: Colors.green,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedGender = value;
+                    });
+                  },
+                ),
+                Text(option),
+              ],
+            );
+          }).toList(),
+        ),
+      ],
+    ),
+  );
+}
 
   Widget _buildAutoSuggestField(String labelText, List<String> suggestions) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Autocomplete<String>(
-        optionsBuilder: (TextEditingValue textEditingValue) {
-          if (textEditingValue.text.isEmpty) {
-            return const Iterable<String>.empty();
-          }
-          return suggestions.where((String option) {
-            return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
-          });
-        },
-        onSelected: (String selection) {
-          setState(() {
-            selectedReligion = selection;
-          });
-        },
-        fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
-          return TextField(
-            controller: textEditingController,
-            focusNode: focusNode,
-            decoration: InputDecoration(
-              labelText: labelText,
-              border: OutlineInputBorder(),
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 9.0),
+    child: Autocomplete<String>(
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        if (textEditingValue.text.isEmpty) {
+          return const Iterable<String>.empty();
+        }
+        return suggestions.where((String option) {
+          return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
+        });
+      },
+      onSelected: (String selection) {
+        setState(() {
+          selectedReligion = selection;
+        });
+      },
+      fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
+        return TextField(
+          controller: textEditingController,
+          focusNode: focusNode,
+          decoration: InputDecoration(
+            labelText: labelText,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.0), // More rounded corners
             ),
-          );
-        },
-      ),
-    );
-  }
+            contentPadding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0), // Smaller height
+            filled: true,
+            fillColor: const Color.fromARGB(255, 255, 255, 255), // Background color set to white
+          ),
+        );
+      },
+    ),
+  );
+}
 
   Widget _buildCheckmarkField(String labelText, List<String> options) {
     return Padding(
@@ -321,7 +351,7 @@ class _ApplyPageState extends State<ApplyPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(labelText, style: TextStyle(fontSize: 16)),
+          Text(labelText, style: const TextStyle(fontSize: 16)),
           ...options.map((option) => CheckboxListTile(
                 title: Text(option),
                 value: selectedGender == option,
@@ -354,12 +384,9 @@ class _ApplyPageState extends State<ApplyPage> {
   return Padding(
     padding: const EdgeInsets.only(bottom: 8.0),
     child: ListTile(
-      title: Text(labelText, style: TextStyle(fontSize: 16)),
-      trailing: IconButton(
-        icon: Image.asset(
-          value ? activeImage : inactiveImage,
-        ),
-        onPressed: () {
+      title: Text(labelText, style: const TextStyle(fontSize: 16)),
+      trailing: GestureDetector(
+        onTap: () {
           setState(() {
             if (labelText == 'Dual Citizenship Status') {
               hasDualCitizenship = !hasDualCitizenship;
@@ -368,6 +395,18 @@ class _ApplyPageState extends State<ApplyPage> {
             }
           });
         },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12.0),
+            color: value ? Colors.blue : Colors.grey, // Background color changes based on state
+          ),
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset(
+            value ? activeImage : inactiveImage,
+            width: 24,
+            height: 24,
+          ),
+        ),
       ),
     ),
   );
