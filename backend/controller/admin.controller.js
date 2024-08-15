@@ -2,13 +2,13 @@ const AdminService = require("../services/admin.services");
 
 exports.register = async (req, res, next) => {
      try {
-          const { fname, lname, email, dob, phone, password } = req.body;
+          const { fname, lname, email, dob, phone, aid, password } = req.body;
 
-          if (!fname || !lname || !email || !dob || !phone || !password) {
+          if (!fname || !lname || !email || !dob || !phone || !aid || !password) {
                return res.status(400).json({ status: false, message: 'All fields are required' });
           }
 
-          const admin = await AdminService.registerAdmin({ fname, lname, email, dob, phone,  password });
+          const admin = await AdminService.registerAdmin({ fname, lname, email, dob, phone, aid, password });
 
           res.json({ status: true, success: 'Admin Registered Successfully', admin });
      } catch (error) {
@@ -19,10 +19,10 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
      try {
 
-          const { email, password } = req.body;
+          const { aid, password } = req.body;
 
-          let admin = await AdminService.checkAdmin(email);
-          console.log("----------Admin-----------",admin);
+          let admin = await AdminService.checkAdmin(aid);
+          console.log("----------Admin-----------", admin);
           if (!admin) {
                throw new Error('Admin does not exist');
           }
@@ -36,7 +36,7 @@ exports.login = async (req, res, next) => {
           // Creating Token
 
           let tokenData;
-          tokenData = { _id: admin._id, email: admin.email };
+          tokenData = { _id: admin._id, aid: admin.aid };
 
 
           const token = await AdminService.generateAccessToken(tokenData, "secret", "1h")

@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:pms_flutter_app/admin_dashboard.dart';
+import 'package:pms_flutter_app/police_dashboard.dart';
 import 'package:pms_flutter_app/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:pms_flutter_app/user_dashboard.dart';
@@ -45,6 +47,56 @@ class _LoginPageState extends State<LoginPage> {
             context,
             MaterialPageRoute(
                 builder: (context) => UserDashboard(token: mytoken)));
+      } else {
+        print('Something is wrong');
+      }
+    }
+  }
+
+  Future loginAdmin() async {
+    if (_formKey.currentState!.validate()) {
+      final admin = {
+        "aid": _adminIdController.text,
+        "password": _passwordController.text,
+      };
+
+      var response = await http.post(Uri.parse(adminlogin),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(admin));
+
+      var jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['status']) {
+        final mytoken = jsonResponse['token'];
+        prefs.setString('token', mytoken);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AdminDashboard(token: mytoken)));
+      } else {
+        print('Something is wrong');
+      }
+    }
+  }
+
+  Future loginPolice() async {
+    if (_formKey.currentState!.validate()) {
+      final police = {
+        "pid": _policeIdController.text,
+        "password": _passwordController.text,
+      };
+
+      var response = await http.post(Uri.parse(policelogin),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(police));
+
+      var jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['status']) {
+        final mytoken = jsonResponse['token'];
+        prefs.setString('token', mytoken);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PoliceDashboard(token: mytoken)));
       } else {
         print('Something is wrong');
       }
@@ -261,27 +313,75 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: loginUser,
-                        // Handle the login logic based on the role and provided information
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                    if (_selectedRole == 'User') ...[
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: loginUser,
+                          // Handle the login logic based on the role and provided information
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
-                        ),
-                        child: const Text(
-                          'Log In',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
+                          child: const Text(
+                            'Log In',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
+                    if (_selectedRole == 'Admin') ...[
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: loginAdmin,
+                          // Handle the login logic based on the role and provided information
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            'Log In',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                    if (_selectedRole == 'Police Officer') ...[
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: loginPolice,
+                          // Handle the login logic based on the role and provided information
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            'Log In',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                     const SizedBox(height: 20),
                     const Row(
                       children: <Widget>[

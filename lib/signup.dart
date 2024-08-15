@@ -20,6 +20,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _nidController = TextEditingController();
   final TextEditingController _policeIdController = TextEditingController();
+  final TextEditingController _adminIdController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String _selectedRole = 'User';
   String _selectedCountryCode = '+880';
@@ -75,6 +76,72 @@ class _SignUpPageState extends State<SignUpPage> {
           Uri.parse(registration),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(user),
+        );
+
+        if (!mounted) return;
+
+        if (response.statusCode == 200) {
+          _showSnackBar('Registered Successfully');
+          _navigateToLogin();
+        } else {
+          _showSnackBar('Registration Failed: ${response.statusCode}');
+        }
+      } catch (e) {
+        _showSnackBar('An error occurred: $e');
+      }
+    }
+  }
+
+  Future<void> _registerAdmin() async {
+    if (_formKey.currentState!.validate()) {
+      final admin = {
+        "fname": _fnameController.text,
+        "lname": _lnameController.text,
+        "email": _emailController.text,
+        "dob": _dobController.text,
+        "phone": int.parse(_phoneController.text),
+        "aid": _adminIdController.text,
+        "password": _passwordController.text,
+      };
+
+      try {
+        final response = await http.post(
+          Uri.parse(adminregistration),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(admin),
+        );
+
+        if (!mounted) return;
+
+        if (response.statusCode == 200) {
+          _showSnackBar('Registered Successfully');
+          _navigateToLogin();
+        } else {
+          _showSnackBar('Registration Failed: ${response.statusCode}');
+        }
+      } catch (e) {
+        _showSnackBar('An error occurred: $e');
+      }
+    }
+  }
+
+  Future<void> _registerPolice() async {
+    if (_formKey.currentState!.validate()) {
+      final police = {
+        "fname": _fnameController.text,
+        "lname": _lnameController.text,
+        "email": _emailController.text,
+        "dob": _dobController.text,
+        "phone": int.parse(_phoneController.text),
+        "pid": _policeIdController.text,
+        "password": _passwordController.text,
+      };
+
+      try {
+        final response = await http.post(
+          Uri.parse(policeregistration),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(police),
         );
 
         if (!mounted) return;
@@ -316,6 +383,16 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       const SizedBox(height: 10),
                     ],
+                    if (_selectedRole == 'Admin') ...[
+                      TextField(
+                        controller: _adminIdController,
+                        decoration: const InputDecoration(
+                          labelText: 'Admin ID',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                    ],
                     if (_selectedRole == 'Police Officer') ...[
                       TextField(
                         controller: _policeIdController,
@@ -354,26 +431,72 @@ class _SignUpPageState extends State<SignUpPage> {
                       },
                     ),
                     const SizedBox(height: 10),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: _registerUser,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                    if (_selectedRole == 'User') ...[
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: _registerUser,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
-                        ),
-                        child: const Text(
-                          'Register',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
+                          child: const Text(
+                            'Register',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
+                    if (_selectedRole == 'Admin') ...[
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: _registerAdmin,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            'Register',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                    if (_selectedRole == 'Police Officer') ...[
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: _registerPolice,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            'Register',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                     const SizedBox(height: 10),
                     Center(
                       child: Row(

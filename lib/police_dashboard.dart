@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class PoliceDashboard extends StatefulWidget {
-  const PoliceDashboard({required Key key}) : super(key: key);
+  final token;
+  const PoliceDashboard({@required this.token, super.key});
 
   @override
   PoliceDashboardState createState() => PoliceDashboardState();
 }
 
 class PoliceDashboardState extends State<PoliceDashboard> {
+  late String pid;
+  @override
+  void initState() {
+    super.initState();
+    Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
+
+    pid = jwtDecodedToken['pid'];
+  }
+
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {

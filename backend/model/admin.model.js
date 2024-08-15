@@ -30,7 +30,11 @@ const adminSchema = new Schema({
           type: Number,
           required: true
      },
-     
+     aid:
+     {
+          type: String,
+          required: true,
+     },
      password:
      {
           type: String,
@@ -53,7 +57,7 @@ adminSchema.pre('save', async function () {
 //used while signIn decrypt
 adminSchema.methods.comparePassword = async function (candidatePassword) {
      try {
-          console.log('----------------no password', this.password);
+          console.log('----------------Password Encrypted', this.password);
           // @ts-ignore
           const isMatch = await bcrypt.compare(candidatePassword, this.password);
           return isMatch;

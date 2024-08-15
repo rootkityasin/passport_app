@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class AdminDashboard extends StatefulWidget {
-  const AdminDashboard({required Key key}) : super(key: key);
+  final token;
+  const AdminDashboard({@required this.token, super.key});
 
   @override
   AdminDashboardState createState() => AdminDashboardState();
 }
 
 class AdminDashboardState extends State<AdminDashboard> {
+  late String aid;
+  @override
+  void initState() {
+    super.initState();
+    Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
+
+    aid = jwtDecodedToken['aid'];
+  }
+
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {

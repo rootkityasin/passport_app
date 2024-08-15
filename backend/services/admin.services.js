@@ -10,17 +10,17 @@ class AdminService {
                throw err;
           }
      }
-     static async getAdminByEmail(email) {
+     static async getAdminByAid(aid) {
           try {
-               return await AdminModel.findOne({ email });
+               return await AdminModel.findOne({ aid });
           } catch (err) {
                console.log(err);
           }
      }
 
-     static async checkAdmin(email) {
+     static async checkAdmin(aid) {
           try {
-               return await AdminModel.findOne({ email });
+               return await AdminModel.findOne({ aid });
           } catch (error) {
                throw error;
           }
