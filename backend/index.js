@@ -2,6 +2,9 @@
 const app = require('./app');
 const db = require('./config/db');
 const userModel = require('./model/user.model');
+const adminModel = require('./model/admin.model');
+const policeModel = require('./model/police.model');
+
 const PORT = 3000;
 
 
