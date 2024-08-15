@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
+import 'apply.dart';       
+import 'reissue.dart';     
+import 'missing.dart';
+import 'status.dart';     
 import 'login.dart';
 
 class UserDashboard extends StatefulWidget {
@@ -173,7 +177,11 @@ class _UserDashboardState extends State<UserDashboard> {
                     Icons.assignment, // Card icon
                     Colors.blue, // Icon color
                     () {
-                      // Handle card press
+                      // Navigate to Apply Page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ApplyPage()),
+                      );
                     },
                   ),
                   _buildAnimatedCard(
@@ -182,7 +190,11 @@ class _UserDashboardState extends State<UserDashboard> {
                     Icons.refresh, // Card icon
                     Colors.green, // Icon color
                     () {
-                      // Handle card press
+                      // Navigate to Reissue Page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ReissuePage()),
+                      );
                     },
                   ),
                   _buildAnimatedCard(
@@ -191,7 +203,11 @@ class _UserDashboardState extends State<UserDashboard> {
                     Icons.report, // Card icon
                     Colors.red, // Icon color
                     () {
-                      // Handle card press
+                      // Navigate to Missing/Lost Page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const MissingLostPage()),
+                      );
                     },
                   ),
                   _buildAnimatedCard(
@@ -200,7 +216,11 @@ class _UserDashboardState extends State<UserDashboard> {
                     Icons.info, // Card icon
                     Colors.orange, // Icon color
                     () {
-                      // Handle card press
+                      // Navigate to Status Page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const StatusPage()),
+                      );
                     },
                   ),
                 ],
@@ -250,27 +270,27 @@ class _UserDashboardState extends State<UserDashboard> {
                 : const Icon(Icons.credit_card, color: Colors.black),
             label: '',
           ),
-          // BottomNavigationBarItem(
-          //   icon: _selectedIndex == 2
-          //       ? Stack(
-          //           alignment: Alignment.center,
-          //           children: [
-          //             Container(
-          //               width: 40,
-          //               height: 40,
-          //               decoration: const BoxDecoration(
-          //                 shape: BoxShape.circle,
-          //                 color: Colors.green,
-          //               ),
-          //             ),
-          //             const Icon(Icons.person, color: Colors.black),
-          //           ],
-          //         )
-          //       : const Icon(Icons.person, color: Colors.black),
-          //   label: '',
-          // ),
           BottomNavigationBarItem(
             icon: _selectedIndex == 2
+                ? Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.green,
+                        ),
+                      ),
+                      const Icon(Icons.person, color: Colors.black),
+                    ],
+                  )
+                : const Icon(Icons.person, color: Colors.black),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: _selectedIndex == 3
                 ? Stack(
                     alignment: Alignment.center,
                     children: [

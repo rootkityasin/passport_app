@@ -67,6 +67,10 @@ flutter:
     - images/admin_icon.png
     - images/police_icon.png
     - images/user_icon.png
+    - images/dual.png
+    - images/dual_border.png
+    - images/favourite.png
+    - images/favourite_border.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
