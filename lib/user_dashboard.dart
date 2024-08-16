@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-import 'apply.dart';       
-import 'reissue.dart';     
+import 'apply.dart';
+import 'reissue.dart';
 import 'missing.dart';
-import 'status.dart';     
+import 'status.dart';
 import 'login.dart';
 
 class UserDashboard extends StatefulWidget {
@@ -120,6 +120,7 @@ class _UserDashboardState extends State<UserDashboard> {
               title: const Text('Settings'),
               onTap: () {
                 // Handle Settings tap
+                Navigator.pushNamed(context, '/setting');
               },
             ),
             ListTile(
@@ -180,7 +181,8 @@ class _UserDashboardState extends State<UserDashboard> {
                       // Navigate to Apply Page
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const ApplyPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const ApplyPage()),
                       );
                     },
                   ),
@@ -193,7 +195,8 @@ class _UserDashboardState extends State<UserDashboard> {
                       // Navigate to Reissue Page
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const ReissuePage()),
+                        MaterialPageRoute(
+                            builder: (context) => const ReissuePage()),
                       );
                     },
                   ),
@@ -206,7 +209,8 @@ class _UserDashboardState extends State<UserDashboard> {
                       // Navigate to Missing/Lost Page
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const MissingLostPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const MissingLostPage()),
                       );
                     },
                   ),
@@ -219,7 +223,8 @@ class _UserDashboardState extends State<UserDashboard> {
                       // Navigate to Status Page
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const StatusPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const StatusPage()),
                       );
                     },
                   ),

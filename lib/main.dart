@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pms_flutter_app/setting.dart';
 import 'login.dart';
 import 'signup.dart';
 import 'user_dashboard.dart';
@@ -18,14 +19,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const LoginPage(), 
+      theme: ThemeData(
+        primarySwatch: Colors.blue, // Set the primary color to blue
+      ),
+      home: const LoginPage(),
       routes: {
         '/signup': (context) => const SignUpPage(),
-        '/user_dashboard': (context) => const UserDashboard(token: 'test_token'), // Static token for testing
+        '/user_dashboard': (context) => const UserDashboard(
+            token: 'test_token'), // Static token for testing
         '/apply': (context) => const ApplyPage(),
         '/reissue': (context) => const ReissuePage(),
         '/missing': (context) => const MissingLostPage(),
         '/status': (context) => const StatusPage(),
+        '/setting': (context) => const SettingsPage(),
       },
     );
   }
