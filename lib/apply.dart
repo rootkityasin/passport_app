@@ -74,7 +74,7 @@ class _ApplyPageState extends State<ApplyPage> {
                         _buildTextField('Place Of Birth'),
                         _buildRadioButtonField('Gender', ['Male', 'Female', 'Others']),
                         _buildAutoSuggestField('Religion', religions),
-                        _buildCheckmarkField('Type Of Citizen', ['Citizen by Birth', 'Naturalized Citizen']),
+                        _buildCitizenTypeField('Type Of Citizen', ['Citizen by Birth', 'Naturalized Citizen']),
                         _buildToggleIconField('Dual Citizenship Status', hasDualCitizenship),
                         _buildToggleIconField('Marital Status', isMarried),
                       ],
@@ -131,18 +131,66 @@ class _ApplyPageState extends State<ApplyPage> {
                     isActive: currentStep >= 4,
                     state: currentStep > 4 ? StepState.complete : StepState.indexed,
                   ),
-                  Step(
-                    title: const Text('Payment'),
-                    content: Column(
-                      children: [
-                        _buildTextField('Bkash'),
-                        _buildTextField('Nagad'),
-                      ],
+                   Step(
+                      title: const Text('Payment'),
+                      content: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Choose Payment Method',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green,
+                            ),
+                          ),
+                          const SizedBox(height: 16.0),
+                          _buildPaymentOption('Bkash', 'images/bkash.png'),
+                          const SizedBox(height: 16.0),
+                          _buildPaymentOption('Nagad', 'images/nagad.png'),
+                          const SizedBox(height: 24.0),
+                          const Text(
+                            'Enter Payment Details',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green,
+                            ),
+                          ),
+                          const SizedBox(height: 16.0),
+                          _buildTextField('Card Number', isNumeric: true),
+                          const SizedBox(height: 16.0),
+                          _buildTextField('Cardholder Name'),
+                          const SizedBox(height: 16.0),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _buildTextField('Expiry Date (MM/YY)', isNumeric: true),
+                              ),
+                              const SizedBox(width: 16.0),
+                              Expanded(
+                                child: _buildTextField('CVV', isNumeric: true, obscureText: true),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 24.0),
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: true,
+                                onChanged: (bool? value) {
+                                  // Handle checkbox state
+                                },
+                              ),
+                              const Text('Save card for future payments'),
+                            ],
+                          ),
+                        ],
+                      ),
+                      isActive: currentStep >= 5,
+                      state: currentStep > 5 ? StepState.complete : StepState.indexed,
                     ),
-                    isActive: currentStep >= 5,
-                    state: currentStep > 5 ? StepState.complete : StepState.indexed,
-                  ),
-                ],
+                  ],
                 onStepContinue: () {
                   if (currentStep < 5) {
                     setState(() {
@@ -195,10 +243,12 @@ class _ApplyPageState extends State<ApplyPage> {
     );
   }
 
-  Widget _buildTextField(String labelText) {
+  Widget _buildTextField(String labelText, {bool isNumeric = false, bool obscureText = false}) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 9.0),
     child: TextField(
+      keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
+      obscureText: obscureText,
       decoration: InputDecoration(
         labelText: labelText,
         border: OutlineInputBorder(
@@ -263,6 +313,10 @@ class _ApplyPageState extends State<ApplyPage> {
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
+          hint: Text(
+            'Select your district',
+            style: TextStyle(color: Colors.grey.withOpacity(0.6)), // Less opacity for hint text
+          ),
           value: initialValue,
           isDense: true,
           onChanged: (String? newValue) {
@@ -347,27 +401,75 @@ class _ApplyPageState extends State<ApplyPage> {
     ),
   );
 }
-
-  Widget _buildCheckmarkField(String labelText, List<String> options) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(labelText, style: const TextStyle(fontSize: 16)),
-          ...options.map((option) => CheckboxListTile(
-                title: Text(option),
-                value: selectedGender == option,
-                onChanged: (bool? value) {
-                  setState(() {
-                    selectedGender = value! ? option : null;
-                  });
-                },
-              )),
-        ],
+Widget _buildCitizenTypeField(String labelText, List<String> options) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 8.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(labelText, style: const TextStyle(fontSize: 16)),
+        Column(
+          children: options.map((option) {
+            return RadioListTile<String>(
+              title: Text(option),
+              value: option,
+              groupValue: selectedGender, 
+              onChanged: (value) {
+                setState(() {
+                  selectedGender = value;
+                });
+              },
+            );
+          }).toList(),
+        ),
+      ],
+    ),
+  );
+}
+Widget _buildPaymentOption(String label, String imagePath) {
+    return GestureDetector(
+      onTap: () {
+        // Handle payment option selection
+        // You could navigate to a payment processing screen here
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.0),
+          border: Border.all(color: Colors.green.shade700, width: 2.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 3,
+              blurRadius: 7,
+              offset: const Offset(0, 3),
+            ),
+          ],
+          color: Colors.white,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Image.asset(
+              imagePath,
+              width: 50,
+              height: 50,
+            ),
+            const SizedBox(width: 16.0),
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
+
 
   Widget _buildToggleIconField(String labelText, bool value) {
   String activeImage;
@@ -413,5 +515,6 @@ class _ApplyPageState extends State<ApplyPage> {
       ),
     ),
   );
+  
 }
 }

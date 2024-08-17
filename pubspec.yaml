@@ -71,7 +71,8 @@ flutter:
     - images/dual_border.png
     - images/favourite.png
     - images/favourite_border.png
-
+    - images/bkash.png
+    - images/nagad.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
