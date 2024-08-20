@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class PaymentPage extends StatelessWidget {
+  const PaymentPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +18,7 @@ class PaymentPage extends StatelessWidget {
           children: [
             const Text(
               'Payment Details',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
