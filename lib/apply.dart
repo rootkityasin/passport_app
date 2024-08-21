@@ -82,7 +82,7 @@ class _ApplyState extends State<Apply> {
 
     try {
       final response = await http.post(
-        Uri.parse("http://localhost:3000/api/apply"),
+        Uri.parse("http://localhost:3000/api/users/apply"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
