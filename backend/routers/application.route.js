@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const { apply } = require('../controller/application.controller');
+const ApplicationController = require("../controller/application.controller");
 
-router.post('/apply', apply);
+router.post('/apply', ApplicationController.apply);
 
 module.exports = router;

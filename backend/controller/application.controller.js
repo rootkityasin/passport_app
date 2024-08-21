@@ -1,86 +1,71 @@
-const Application = require('../model/application.model');
 
-const apply = async (req, res) => {
-    const { 
-        personalInfo: {
-            nationalId,
-            birthCertificate,
-            citizenship,
-            dualCitizenship,
-            otherCitizenshipCountry,
-            foreignPassportNo,
-            maritalStatus,
-            profession,
-            contactNo,
-            email
-        },
-        permanentAddress: {
-            district: permanentDistrict,
-            policeStation: permanentPoliceStation,
-            postOffice: permanentPostOffice,
-            postCode: permanentPostCode,
-            city: permanentCity,
-            road: permanentRoad
-        },
-        presentAddress: {
-            district: presentDistrict,
-            policeStation: presentPoliceStation,
-            postOffice: presentPostOffice,
-            postCode: presentPostCode,
-            city: presentCity,
-            road: presentRoad
-        }
-    } = req.body;
+const ApplicationService = require('../services/application.services');
 
-    // Basic validation
-    if (
-        !nationalId || !birthCertificate || !citizenship || !dualCitizenship || !otherCitizenshipCountry ||
-        !foreignPassportNo || !maritalStatus || !profession || !contactNo || !email ||
-        !permanentDistrict || !permanentPoliceStation || !permanentPostOffice || !permanentPostCode || !permanentCity || !permanentRoad ||
-        !presentDistrict || !presentPoliceStation || !presentPostOffice || !presentPostCode || !presentCity || !presentRoad
-    ) {
-        return res.status(400).json({ error: "All fields are required" });
-    }
-
-    const application = new Application({
-        personalInfo: {
-            nationalId,
-            birthCertificate,
-            citizenship,
-            dualCitizenship,
-            otherCitizenshipCountry,
-            foreignPassportNo,
-            maritalStatus,
-            profession,
-            contactNo,
-            email
-        },
-        permanentAddress: {
-            district: permanentDistrict,
-            policeStation: permanentPoliceStation,
-            postOffice: permanentPostOffice,
-            postCode: permanentPostCode,
-            city: permanentCity,
-            road: permanentRoad
-        },
-        presentAddress: {
-            district: presentDistrict,
-            policeStation: presentPoliceStation,
-            postOffice: presentPostOffice,
-            postCode: presentPostCode,
-            city: presentCity,
-            road: presentRoad
-        }
-    });
-
+exports.apply = async (req, res,next) => {
     try {
-        const savedApplication = await application.save();
-        console.log(savedApplication);
-        res.status(201).json(savedApplication); // Send status 201 for a successful creation
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Failed to save the application" }); // Send status 500 for server errors
+        const { 
+            personalInfo: {
+                nationalId,
+                birthCertificate,
+                citizenship,
+                dualCitizenship,
+                otherCitizenshipCountry,
+                foreignPassportNo,
+                maritalStatus,
+                profession,
+                contactNo,
+                email
+            },
+            permanentAddress: {
+                district: permanentDistrict,
+                policeStation: permanentPoliceStation,
+                postOffice: permanentPostOffice,
+                postCode: permanentPostCode,
+                city: permanentCity,
+                road: permanentRoad
+            },
+            presentAddress: {
+                district: presentDistrict,
+                policeStation: presentPoliceStation,
+                postOffice: presentPostOffice,
+                postCode: presentPostCode,
+                city: presentCity,
+                road: presentRoad
+            }
+        } = req.body;
+    
+        // Basic validation
+        if (
+            !nationalId || !birthCertificate || !citizenship || !dualCitizenship || !otherCitizenshipCountry ||
+            !foreignPassportNo || !maritalStatus || !profession || !contactNo || !email ||
+            !permanentDistrict || !permanentPoliceStation || !permanentPostOffice || !permanentPostCode || !permanentCity || !permanentRoad ||
+            !presentDistrict || !presentPoliceStation || !presentPostOffice || !presentPostCode || !presentCity || !presentRoad
+        ) {
+            return res.status(400).json({ error: "All fields are required" });
+         }
+    
+         const apply = await ApplicationService.applicationUser(nationalId,birthCertificate,citizenship,dualCitizenship,otherCitizenshipCountry,foreignPassportNo,
+            maritalStatus,profession,contactNo,email,permanentDistrict,permanentPoliceStation,permanentPostOffice,permanentPostCode,permanentCity,
+            permanentRoad,presentDistrict,presentPoliceStation,presentPostOffice,presentPostCode,presentCity,presentRoad
+         )
+         res.json({
+            status:true,
+            success:"apply successfully",
+            apply
+         })
+    } catch (error) {
+        res.status(500).json({
+            status:false,
+            message:error.message
+
+        })
+        console.log(error.message)
     }
+   
+
+
+
+ 
 };
 
-module.exports = { apply };
+

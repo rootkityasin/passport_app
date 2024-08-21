@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-
+const { Schema } = mongoose;
+const db = require('../config/db');
 const applicationSchema = new Schema({
     personalInfo: {
         nationalId: {
@@ -100,4 +100,6 @@ const applicationSchema = new Schema({
     timestamps: true // Automatically adds createdAt and updatedAt fields
 });
 
-module.exports = mongoose.model('Application', applicationSchema);
+const ApplicationModel = db.model('Application', applicationSchema);
+
+module.exports = ApplicationModel;

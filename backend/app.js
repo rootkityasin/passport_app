@@ -14,5 +14,5 @@ app.use(body_parser.json());
 app.use('/api/users', userRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/police', policeRouter);
-app.use('/api/apply', apply);
+//app.use('/api/apply', apply);
 module.exports = app;
