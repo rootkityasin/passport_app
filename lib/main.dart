@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignUpPage(),
         '/user_dashboard': (context) => const UserDashboard(
             token: 'test_token'), // Static token for testing
-        '/apply': (context) => const ApplyPage(),
+        '/apply': (context) => Apply(),
         '/reissue': (context) => const ReissuePage(),
         '/missing': (context) => const MissingLostPage(),
         '/status': (context) => const StatusPage(),

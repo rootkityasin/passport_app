@@ -47,3 +47,29 @@ exports.login = async (req, res, next) => {
           next(error);
      }
 }
+
+
+exports.getUser = async (req, res, next) => {
+     const userId = req.params.id;
+     User.findById(userId, (err, user) => {
+         if (err) {
+             console.log(err);
+             return res.status(500).json({ error: 'Internal Server Error' });
+         }
+         if (!user) {
+             return res.status(404).json({ message: 'User not found' });
+         }
+         res.status(200).json(user);
+     });
+ }
+ 
+ exports.logout = async (req, res, next) => {
+     // Destroy the session
+     req.session.destroy(err => {
+         if (err) {
+             return res.status(500).json({ error: 'Failed to logout' });
+         }
+         res.clearCookie('connect.sid'); // Optional: clear the session cookie
+         res.status(200).json({ message: 'Logout successful' });
+     });
+ }
