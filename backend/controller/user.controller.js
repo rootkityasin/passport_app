@@ -1,6 +1,6 @@
 const UserService = require("../services/user.services");
 const UserModel = require('../model/user.model');
-const ApplicationService = require('../services/application.services');
+
 exports.register = async (req, res, next) => {
     try {
         const { fname, lname, email, dob, phone, nid, password } = req.body;
@@ -70,19 +70,3 @@ exports.logout = async (req, res, next) => {
         res.status(200).json({ message: 'Logout successful' });
     });
 }
-
-exports.apply = async (req, res, next) => {
-    try {
-        const { fname, lname, email, dob, phone, nid, address, passportType } = req.body;
-
-        if (!fname || !lname || !email || !dob || !phone || !nid || !address || !passportType) {
-            return res.status(400).json({ status: false, message: 'All fields are required' });
-        }
-
-        const application = await ApplicationService.submitApplication({ fname, lname, email, dob, phone, nid, address, passportType });
-
-        res.json({ status: true, success: 'Application Submitted Successfully', application });
-    } catch (error) {
-        res.status(500).json({ status: false, message: error.message });
-    }
-};
