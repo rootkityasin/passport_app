@@ -65,5 +65,6 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
           throw error;
      }
 };
+
 const UserModel = db.model('User', userSchema);
 module.exports = UserModel;

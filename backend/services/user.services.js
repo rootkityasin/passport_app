@@ -29,6 +29,18 @@ class UserService {
      static async generateAccessToken(tokenData, JWTSecret_Key, JWT_EXPIRE) {
           return jwt.sign(tokenData, JWTSecret_Key, { expiresIn: JWT_EXPIRE });
      }
+
+     static async getUser(id) {
+          try {
+               const user = await User.findById(id);
+               if (!user) {
+                   return res.status(404).send({ message: 'User not found' });
+               }
+               res.status(200).send(user);
+          } catch (error) {
+               res.status(500).send({ message: 'Server error' });
+          }
+     }
 }
 
 module.exports = UserService;

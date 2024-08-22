@@ -401,6 +401,7 @@ class _ApplyPageState extends State<ApplyPage> {
     ),
   );
 }
+ String? selectedCitizenType;
 Widget _buildCitizenTypeField(String labelText, List<String> options) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 8.0),
@@ -413,10 +414,10 @@ Widget _buildCitizenTypeField(String labelText, List<String> options) {
             return RadioListTile<String>(
               title: Text(option),
               value: option,
-              groupValue: selectedGender, 
+              groupValue: selectedCitizenType, // Use the correct state variable
               onChanged: (value) {
                 setState(() {
-                  selectedGender = value;
+                  selectedCitizenType = value; // Update the correct state variable
                 });
               },
             );
@@ -469,7 +470,7 @@ Widget _buildPaymentOption(String label, String imagePath) {
       ),
     );
   }
-
+  
 
   Widget _buildToggleIconField(String labelText, bool value) {
   String activeImage;

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'dart:convert'; // For jsonDecode
+import 'package:http/http.dart' as http; // For making HTTP requests
 
 import 'apply.dart';
 import 'reissue.dart';
@@ -8,21 +10,54 @@ import 'status.dart';
 import 'login.dart';
 
 class UserDashboard extends StatefulWidget {
-  final token;
-  const UserDashboard({@required this.token, super.key});
+  final String token;
+  const UserDashboard({required this.token, super.key});
 
   @override
   _UserDashboardState createState() => _UserDashboardState();
 }
 
 class _UserDashboardState extends State<UserDashboard> {
-  late String email;
+  late String email = '';
+  late String fname = '';
+  late String lname = '';
+  late String userId = '';
+
   @override
   void initState() {
     super.initState();
-    Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
+    _decodeTokenAndFetchUserData();
+  }
 
-    email = jwtDecodedToken['email'];
+  void _decodeTokenAndFetchUserData() async {
+    try {
+      // Decode the token to get the user ID
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(widget.token);
+      userId = decodedToken['_id']; // Updated to match the backend token structure
+
+      if (userId.isEmpty) {
+        print('Error: userId is null or empty');
+        return;
+      }
+
+      final response = await http.get(Uri.parse('http://localhost:3000/api/users/getUser/$userId'));
+
+      if (response.statusCode == 200) {
+       
+        final userData = jsonDecode(response.body);
+        setState(() {
+          email = userData['email'] ?? '';
+          fname = userData['fname'] ?? '';
+          lname = userData['lname'] ?? '';
+        });
+        print('User data fetched: $userData'); 
+      } else {
+        
+        print('Failed to load user data');
+      }
+    } catch (e) {
+      print('Error in _decodeTokenAndFetchUserData: $e');
+    }
   }
 
   int _selectedIndex = 0;
@@ -60,13 +95,13 @@ class _UserDashboardState extends State<UserDashboard> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            const UserAccountsDrawerHeader(
-              accountName: Text("Parvez"),
-              accountEmail: Text("UI / UX ENGINEER"),
-              currentAccountPicture: CircleAvatar(
+            UserAccountsDrawerHeader(
+              accountName: Text("$fname $lname"),
+              accountEmail: Text(email),
+              currentAccountPicture: const CircleAvatar(
                 backgroundImage: AssetImage('images/govt.png'),
               ),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.teal, // Background color of the header
               ),
             ),
@@ -181,7 +216,7 @@ class _UserDashboardState extends State<UserDashboard> {
                       // Navigate to Apply Page
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ApplyPage()),
+                        MaterialPageRoute(builder: (context) => const ApplyPage()),
                       );
                     },
                   ),
