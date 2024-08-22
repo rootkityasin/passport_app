@@ -181,7 +181,7 @@ class _UserDashboardState extends State<UserDashboard> {
                       // Navigate to Apply Page
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Apply()),
+                        MaterialPageRoute(builder: (context) => ApplyPage()),
                       );
                     },
                   ),
