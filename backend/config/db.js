@@ -1,9 +1,20 @@
 const mongoose = require('mongoose');
 
-const connection = mongoose.createConnection('mongodb+srv://parvez:12345@pms2024.prban7k.mongodb.net/pms').on('open', () => {
-     console.log("MongoDb Connected")
-}).on('error', () => {
-     console.log("MongoDb Connection error")
-});
+async function connectDB() {
+    try {
+        await mongoose.connect('mongodb+srv://parvez:12345@pms2024.prban7k.mongodb.net/pms', {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            serverSelectionTimeoutMS: 10000, // 10 seconds timeout
+            socketTimeoutMS: 45000, // 45 seconds socket timeout
+        });
+        console.log("MongoDB Connected Successfully");
+    } catch (error) {
+        console.error("MongoDB Connection Error: ", error);
+        process.exit(1); // Exit process with failure
+    }
+}
 
-module.exports = connection;
+connectDB();
+
+module.exports = mongoose;

@@ -13,6 +13,7 @@ const ApplicationSchema = new mongoose.Schema({
         religion: { type: String, required: true },
         citizenType: { type: String, required: true },
         dualCitizenshipStatus: { type: Boolean, required: true },
+        maritialStatus: { type: Boolean, required: true },
         nationalId: { type: String, required: true },
         birthCertificate: { type: String, required: true },
         otherCitizenshipCountry: { type: String },
@@ -38,13 +39,9 @@ const ApplicationSchema = new mongoose.Schema({
         postCode: { type: String, required: true },
         city: { type: String, required: true },
         road: { type: String, required: true },
-    },
-    paymentInfo: {
-        cardNumber: { type: String, required: true },
-        cardholderName: { type: String, required: true },
-        expiryDate: { type: String, required: true },
-        cvv: { type: String, required: true },
-    },
+    }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Application', ApplicationSchema);
+const ApplicationModel = mongoose.model('Application', ApplicationSchema);
+
+module.exports = ApplicationModel;
