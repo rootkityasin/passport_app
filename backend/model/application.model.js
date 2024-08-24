@@ -25,8 +25,26 @@ const ApplicationSchema = new mongoose.Schema({
         country: { type: String, required: true },
         district: { type: String, required: true },
         policeStation: { type: String, required: true },
-        postOffice: { type: String, required: true }
-    }
-});
+        postOffice: { type: String, required: true },
+        postCode: { type: String, required: true },
+        city: { type: String, required: true },
+        road: { type: String, required: true },
+    },
+    permanentAddress: {
+        country: { type: String, required: true },
+        district: { type: String, required: true },
+        policeStation: { type: String, required: true },
+        postOffice: { type: String, required: true },
+        postCode: { type: String, required: true },
+        city: { type: String, required: true },
+        road: { type: String, required: true },
+    },
+    paymentInfo: {
+        cardNumber: { type: String, required: true },
+        cardholderName: { type: String, required: true },
+        expiryDate: { type: String, required: true },
+        cvv: { type: String, required: true },
+    },
+}, { timestamps: true });
 
 module.exports = mongoose.model('Application', ApplicationSchema);
