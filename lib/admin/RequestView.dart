@@ -1,26 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:pms_flutter_app/admin/admin_request.dart';
-import 'package:pms_flutter_app/users/user.dart';
+import 'package:pms_flutter_app/admin/RequestView.dart';
 
-class AdminDashboard extends StatefulWidget {
-  final String token;
-  const AdminDashboard({required this.token, Key? key}) : super(key: key);
+class Requestview extends StatefulWidget {
+  const Requestview({Key? key}) : super(key: key);
 
   @override
   AdminDashboardState createState() => AdminDashboardState();
 }
 
-class AdminDashboardState extends State<AdminDashboard> {
-  late String aid;
-
-  @override
-  void initState() {
-    super.initState();
-    Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
-    aid = jwtDecodedToken['aid'];
-  }
-
+class AdminDashboardState extends State<Requestview> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -33,7 +21,7 @@ class AdminDashboardState extends State<AdminDashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin Dashboard'),
+        title: const Text('All Requests'),
         leading: IconButton(
           icon: const Icon(Icons.menu),
           onPressed: () {
@@ -71,86 +59,94 @@ class AdminDashboardState extends State<AdminDashboard> {
                 fillColor: Colors.grey[200],
               ),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 16),
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 1, // Adjust number of columns to control width
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-                childAspectRatio: 2 / 1, // Adjust aspect ratio for card size
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.blueGrey,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 5,
-                            spreadRadius: 1,
-                            color: Colors.black26,
-                          ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      child: Column(
+                        children: [
+                          ListTile(
+                            title: Text("data"),
+                          )
                         ],
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(25.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Icon(
-                                  Icons.people,
-                                  color: Colors.blue,
-                                  size: 60, // Increase icon size
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  "Total Request (24)",
-                                  style: TextStyle(
-                                    fontSize: 20, // Increase text size
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const Spacer(),
-                            Center(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const AdminRequest()));
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 12.0,
-                                    horizontal: 24.0,
-                                  ),
-                                ),
-                                child: const Text(
-                                  "Check Requests",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: const [
+                            BoxShadow(
+                              blurRadius: 5,
+                              spreadRadius: 1,
+                              color: Colors.black26,
                             ),
                           ],
                         ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Top Row: Image and Name
+
+                              Row(
+                                children: [
+                                  Center(
+                                    child: ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.green,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 12.0,
+                                          horizontal: 24.0,
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        "Accept",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Center(
+                                    child: ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.green,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 12.0,
+                                          horizontal: 24.0,
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        "Decline",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
