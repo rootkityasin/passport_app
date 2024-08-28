@@ -3,7 +3,6 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:convert'; // For jsonDecode
 import 'package:http/http.dart' as http; // For making HTTP requests
 import 'package:pms_flutter_app/users/setting.dart';
-import 'package:badges/badges.dart';
 import 'apply.dart';
 import '../config.dart';
 import 'reissue.dart';

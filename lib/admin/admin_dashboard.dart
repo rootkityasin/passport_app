@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pms_flutter_app/admin/admin_request.dart';
-import 'package:pms_flutter_app/users/user.dart';
 
 class AdminDashboard extends StatefulWidget {
   final String token;
@@ -98,9 +97,9 @@ class AdminDashboardState extends State<AdminDashboard> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
+                            const Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
+                              children: [
                                 Icon(
                                   Icons.people,
                                   color: Colors.blue,
