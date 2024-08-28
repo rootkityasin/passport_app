@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:pms_flutter_app/admin_dashboard.dart';
-import 'package:pms_flutter_app/police_dashboard.dart';
-import 'package:pms_flutter_app/user.dart';
+import 'package:pms_flutter_app/admin/admin_dashboard.dart';
+import 'package:pms_flutter_app/police/police_dashboard.dart';
+import 'package:pms_flutter_app/users/user.dart';
 import 'package:http/http.dart' as http;
-import 'package:pms_flutter_app/user_dashboard.dart';
+import 'package:pms_flutter_app/users/user_dashboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pms_flutter_app/config.dart';
 

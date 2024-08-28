@@ -5,10 +5,11 @@ const adminModel = require('./model/admin.model');
 const policeModel = require('./model/police.model');
 const PORT = 3000;
 
+
 app.get('/', (req, res) => {
      res.send("Hello World");
 });
 
-app.listen(PORT, 'localhost', () => {
+app.listen(PORT,'0.0.0.0', () => {
      console.log(`Server Listening on Port http://localhost:${PORT}`);
 });

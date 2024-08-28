@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:convert'; // For jsonDecode
 import 'package:http/http.dart' as http; // For making HTTP requests
-
+import 'package:pms_flutter_app/users/setting.dart';
+import 'package:badges/badges.dart';
 import 'apply.dart';
+import '../config.dart';
 import 'reissue.dart';
 import 'missing.dart';
 import 'status.dart';
-import 'login.dart';
+import '../login.dart';
 
 class UserDashboard extends StatefulWidget {
   final String token;
@@ -22,6 +24,7 @@ class _UserDashboardState extends State<UserDashboard> {
   late String fname = '';
   late String lname = '';
   late String userId = '';
+  bool hasNewNotification = true;
 
   @override
   void initState() {
@@ -33,26 +36,25 @@ class _UserDashboardState extends State<UserDashboard> {
     try {
       // Decode the token to get the user ID
       Map<String, dynamic> decodedToken = JwtDecoder.decode(widget.token);
-      userId = decodedToken['_id']; // Updated to match the backend token structure
+      userId =
+          decodedToken['_id']; // Updated to match the backend token structure
 
       if (userId.isEmpty) {
         print('Error: userId is null or empty');
         return;
       }
 
-      final response = await http.get(Uri.parse('http://localhost:3000/api/users/getUser/$userId'));
+      final response = await http.get(Uri.parse('$userdata/$userId'));
 
       if (response.statusCode == 200) {
-       
         final userData = jsonDecode(response.body);
         setState(() {
           email = userData['email'] ?? '';
           fname = userData['fname'] ?? '';
           lname = userData['lname'] ?? '';
         });
-        print('User data fetched: $userData'); 
+        print('User data fetched: $userData');
       } else {
-        
         print('Failed to load user data');
       }
     } catch (e) {
@@ -65,6 +67,14 @@ class _UserDashboardState extends State<UserDashboard> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+    });
+  }
+
+  void _handleNotificationPress() {
+    // Handle notification press
+    // Once the user views the notifications, set the state to remove the red dot
+    setState(() {
+      hasNewNotification = false;
     });
   }
 
@@ -110,6 +120,12 @@ class _UserDashboardState extends State<UserDashboard> {
               title: const Text('Dashboard'),
               onTap: () {
                 // Handle Dashboard tap
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserDashboard(token: widget.token),
+                  ),
+                );
               },
             ),
             ListTile(
@@ -155,7 +171,12 @@ class _UserDashboardState extends State<UserDashboard> {
               title: const Text('Settings'),
               onTap: () {
                 // Handle Settings tap
-                Navigator.pushNamed(context, '/setting');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsPage(token: widget.token),
+                  ),
+                );
               },
             ),
             ListTile(
@@ -216,7 +237,8 @@ class _UserDashboardState extends State<UserDashboard> {
                       // Navigate to Apply Page
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const ApplyPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const ApplyPage()),
                       );
                     },
                   ),

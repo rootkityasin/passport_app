@@ -1,14 +1,57 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:pms_flutter_app/setting.dart';
+import 'package:pms_flutter_app/users/setting.dart';
 import 'login.dart';
 import 'signup.dart';
-import 'user_dashboard.dart';
-import 'apply.dart';
-import 'reissue.dart';
-import 'missing.dart';
-import 'status.dart';
+import 'users/user_dashboard.dart';
+import 'users/apply.dart';
+import 'users/reissue.dart';
+import 'users/missing.dart';
+import 'users/status.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  AwesomeNotifications().initialize(
+    'asset://assets/logo.png', // The notification icon should be null if you want to use the default app icon
+    [
+      NotificationChannel(
+        channelKey: 'user_channel',
+        channelName: 'User Notifications',
+        channelDescription: 'Notifications for general users',
+        defaultColor: Colors.blue,
+        ledColor: Colors.white,
+        importance: NotificationImportance.High,
+      ),
+      NotificationChannel(
+        channelKey: 'admin_channel',
+        channelName: 'Admin Notifications',
+        channelDescription: 'Notifications for admins',
+        defaultColor: Colors.red,
+        ledColor: Colors.white,
+        importance: NotificationImportance.High,
+      ),
+      NotificationChannel(
+        channelKey: 'police_channel',
+        channelName: 'Police Notifications',
+        channelDescription: 'Notifications for police officers',
+        defaultColor: Colors.green,
+        ledColor: Colors.white,
+        importance: NotificationImportance.High,
+      ),
+    ],
+  );
+  //
+  // AwesomeNotifications().actionStream.listen((receivedNotification) {
+  //   if (receivedNotification.buttonKeyPressed == 'REPLY') {
+  //     // Handle reply action
+  //     print('User pressed reply');
+  //   } else if (receivedNotification.buttonKeyPressed == 'MARK_READ') {
+  //     // Handle mark as read action
+  //     print('User marked as read');
+  //   }
+  // });
+
   runApp(const MyApp());
 }
 
@@ -31,7 +74,7 @@ class MyApp extends StatelessWidget {
         '/reissue': (context) => const ReissuePage(),
         '/missing': (context) => const MissingLostPage(),
         '/status': (context) => const StatusPage(),
-        '/setting': (context) => const SettingsPage(),
+        '/setting': (context) => const SettingsPage(token: 'test_token'),
       },
     );
   }
