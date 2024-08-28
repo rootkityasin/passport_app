@@ -1,5 +1,8 @@
 const UserService = require("../services/user.services");
 const UserModel = require('../model/user.model');
+const jwt = require("jsonwebtoken");
+require('dotenv').config();
+
 
 exports.register = async (req, res, next) => {
     try {
@@ -37,7 +40,7 @@ exports.login = async (req, res, next) => {
         let tokenData;
         tokenData = { _id: user._id, email: user.email, fname: user.fname, lname: user.lname };
 
-        const token = await UserService.generateAccessToken(tokenData, "secret", "1h");
+        const token = await UserService.generateAccessToken(tokenData);
 
         res.status(200).json({ status: true, success: "sendData", token: token });
     } catch (error) {
@@ -49,7 +52,7 @@ exports.login = async (req, res, next) => {
 exports.getUser = async (req, res, next) => {
     try {
         const userId = req.params.id;
-        const user = await UserModel.findById(userId).select('fname lname email'); // Select only the required fields
+        const user = await UserModel.findById(userId); // Select only the required fields
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -59,6 +62,23 @@ exports.getUser = async (req, res, next) => {
         res.status(500).json({ message: 'Server error' });
     }
 }
+
+exports.updateUser = async (req, res, next) => {
+    try {
+        const userId = req.params.id;
+        const userData = req.body;
+
+        const updatedUser = await UserService.updateUser(userId, userData);
+
+        if (!updatedUser) {
+            return res.status(404).json({ status: false, message: 'User not found' });
+        }
+
+        res.status(200).json({ status: true, success: "User updated successfully", data: updatedUser });
+    } catch (error) {
+        res.status(500).json({ status: false, message: error.message });
+    }
+};
 
 exports.logout = async (req, res, next) => {
     // Destroy the session

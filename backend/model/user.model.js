@@ -17,6 +17,7 @@ const userSchema = new Schema({
      email:
      {
           type: String,
+          lowercase: true,
           required: true, unique: true
      },
      dob:
@@ -24,6 +25,21 @@ const userSchema = new Schema({
           type: Date,
           default: () => new Date().toISOString().split('T')[0],
           required: true
+     },
+     country:
+     {
+          type: String,
+          default: '',
+     },
+     presentaddress:
+     {
+          type: String,
+          default: '',
+     },
+     permanentaddress:
+     {
+          type: String,
+          default: '',
      },
      phone:
      {
@@ -60,6 +76,7 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
           console.log('----------------no password', this.password);
           // @ts-ignore
           const isMatch = await bcrypt.compare(candidatePassword, this.password);
+          console.log("Old hashed password:", isMatch);
           return isMatch;
      } catch (error) {
           throw error;
