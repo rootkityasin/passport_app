@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -15,10 +14,13 @@ class _ApplyPageState extends State<ApplyPage> {
   int currentStep = 1;
   DateTime? selectedDate;
   String? selectedCountry;
-  String? selectedDistrict;
+  String? selectedPlaceOfBirth;
   String? selectedGender;
+  String? selectedCitizenType;
   String? selectedReligion;
   bool hasDualCitizenship = false;
+  String? selectedotherCitizenship;
+  
   bool isMarried = false;
 
   final List<String> districts = [
@@ -34,58 +36,114 @@ class _ApplyPageState extends State<ApplyPage> {
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _givenNameController = TextEditingController();
   final TextEditingController _surnameController = TextEditingController();
-  final TextEditingController _placeOfBirthController = TextEditingController();
-  final TextEditingController _typeOfCitizenController = TextEditingController();
-  final TextEditingController _nationalIdNoController = TextEditingController();
-  final TextEditingController _birthRegistrationController = TextEditingController();
-  final TextEditingController _countryOfOtherCitizenshipController = TextEditingController();
+  final TextEditingController _dateOfBirthController = TextEditingController();
+  final TextEditingController _nationalityController = TextEditingController();
   final TextEditingController _foreignPassportNoController = TextEditingController();
+  final TextEditingController _spouseNameController = TextEditingController();
+  final TextEditingController _spouseNationalityController = TextEditingController();
+  final TextEditingController _spouseProfessionController = TextEditingController();
+  final TextEditingController _spousePassportNoController = TextEditingController();
+  final TextEditingController _spouseNationalIdController = TextEditingController();
+
+  final TextEditingController _nationalIdController = TextEditingController();
+  final TextEditingController _birthCertificateController = TextEditingController();
   final TextEditingController _professionController = TextEditingController();
   final TextEditingController _contactNoController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _presentCountryController = TextEditingController();
+
   final TextEditingController _presentDistrictController = TextEditingController();
   final TextEditingController _presentPoliceStationController = TextEditingController();
   final TextEditingController _presentPostOfficeController = TextEditingController();
   final TextEditingController _presentPostalCodeController = TextEditingController();
   final TextEditingController _presentCityVillageHouseController = TextEditingController();
   final TextEditingController _presentRoadBlockSectorController = TextEditingController();
-  final TextEditingController _permanentCountryController = TextEditingController();
+
   final TextEditingController _permanentDistrictController = TextEditingController();
   final TextEditingController _permanentPoliceStationController = TextEditingController();
   final TextEditingController _permanentPostOfficeController = TextEditingController();
   final TextEditingController _permanentPostalCodeController = TextEditingController();
   final TextEditingController _permanentCityVillageHouseController = TextEditingController();
   final TextEditingController _permanentRoadBlockSectorController = TextEditingController();
+
   final TextEditingController _cardNumberController = TextEditingController();
   final TextEditingController _cardholderNameController = TextEditingController();
   final TextEditingController _expiryDateController = TextEditingController();
   final TextEditingController _cvvController = TextEditingController();
 
+ @override
+  void dispose() {
+    _fullNameController.dispose();
+    _givenNameController.dispose();
+    _surnameController.dispose();
+    _dateOfBirthController.dispose();
+    _nationalityController.dispose();
+    _foreignPassportNoController.dispose();
+    _spouseNameController.dispose();
+    _spouseNationalityController.dispose();
+    _spouseProfessionController.dispose();
+    _spousePassportNoController.dispose();
+    _spouseNationalIdController.dispose();
+
+    _nationalIdController.dispose();
+    _birthCertificateController.dispose();
+    _professionController.dispose();
+    _contactNoController.dispose();
+    _emailController.dispose();
+
+    _presentDistrictController.dispose();
+    _presentPoliceStationController.dispose();
+    _presentPostOfficeController.dispose();
+    _presentPostalCodeController.dispose();
+    _presentCityVillageHouseController.dispose();
+    _presentRoadBlockSectorController.dispose();
+
+    _permanentDistrictController.dispose();
+    _permanentPoliceStationController.dispose();
+    _permanentPostOfficeController.dispose();
+    _permanentPostalCodeController.dispose();
+    _permanentCityVillageHouseController.dispose();
+    _permanentRoadBlockSectorController.dispose();
+    
+    _cardNumberController.dispose();
+    _cardholderNameController.dispose();
+    _expiryDateController.dispose();
+    _cvvController.dispose();
+    
+
+    super.dispose();
+  }
+
   Future<void> submitApplication() async {
+    
     final applicationData = {
       'personalInfo': {
         'fullName': _fullNameController.text,
         'givenName': _givenNameController.text,
         'surname': _surnameController.text,
-        'dateOfBirth': selectedDate?.toIso8601String(),
-        'countryOfBirth': selectedCountry,
-        'districtOfBirth': selectedDistrict,
-        'placeOfBirth': _placeOfBirthController.text,
+        'dateOfBirth': _dateOfBirthController.text,
+        'countryOfBirth': selectedCountry ?? 'Bangladesh',
+        'nationality' : _nationalityController.text,
+        'placeOfBirth': selectedPlaceOfBirth,
         'gender': selectedGender,
+        'citizenType': selectedCitizenType,
         'religion': selectedReligion,
-        'citizenType': _typeOfCitizenController.text,
         'dualCitizenshipStatus': hasDualCitizenship,
-        'nationalId': _nationalIdNoController.text,
-        'birthCertificate': _birthRegistrationController.text,
-        'otherCitizenshipCountry': _countryOfOtherCitizenshipController.text,
+        'otherCitizenshipCountry': selectedotherCitizenship,
         'foreignPassportNo': _foreignPassportNoController.text,
+        'maritalStatus': isMarried,
+        'spouseName': _spouseNameController.text,
+        'spouseNationality': _spouseNationalityController.text,
+        'spouseProfession': _spouseProfessionController.text,
+        'spousePassportNo': _spousePassportNoController.text,
+        'spouseNationalId': _spouseNationalIdController.text,
+
+        'nationalId': _nationalIdController.text,
+        'birthCertificateNo': _birthCertificateController.text,
         'profession': _professionController.text,
         'contactNo': _contactNoController.text,
         'email': _emailController.text,
       },
       'presentAddress': {
-        'country': _presentCountryController.text,
         'district': _presentDistrictController.text,
         'policeStation': _presentPoliceStationController.text,
         'postOffice': _presentPostOfficeController.text,
@@ -94,7 +152,6 @@ class _ApplyPageState extends State<ApplyPage> {
         'road': _presentRoadBlockSectorController.text,
       },
       'permanentAddress': {
-        'country': _permanentCountryController.text,
         'district': _permanentDistrictController.text,
         'policeStation': _permanentPoliceStationController.text,
         'postOffice': _permanentPostOfficeController.text,
@@ -102,48 +159,100 @@ class _ApplyPageState extends State<ApplyPage> {
         'city': _permanentCityVillageHouseController.text,
         'road': _permanentRoadBlockSectorController.text,
       },
-      'paymentInfo': {
-        'cardNumber': _cardNumberController.text,
-        'cardholderName': _cardholderNameController.text,
-        'expiryDate': _expiryDateController.text,
-        'cvv': _cvvController.text,
-      },
     };
 
-    // Check for null or empty values
-    applicationData.forEach((section, data) {
-      data.forEach((key, value) {
-        if (value == null || (value as String).isEmpty) {
-          print('Field $key in section $section is empty or null');
-        }
-      });
-    });
+  final wrappedApplicationData = {
+    'applicationData': applicationData,
+  };
 
+  
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:3000/api/apply'),
+        Uri.parse('http://localhost:3000/api/users/apply'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(applicationData),
+        body: jsonEncode(wrappedApplicationData),
       );
 
       if (response.statusCode == 200) {
-        // Handle successful submission
-        print('Application submitted successfully');
+        final responseData = jsonDecode(response.body);
+        final wrappedResponse = {
+          'status': true,
+          'success': 'Applied successfully',
+          'apply': responseData,
+        };
+
+        print(jsonEncode(wrappedResponse));
       } else {
-        // Handle error
-        print('Failed to submit application: ${response.body}');
+        print('Failed to apply: ${response.statusCode}');
+        print('Response body: ${response.body}');
+        print(wrappedApplicationData);
       }
     } catch (e) {
-      print('Error submitting application: $e');
-    }
+      print('Error: $e');
+    } 
+}
+
+bool _validatePersonalInfo() {
+  return _fullNameController.text.isNotEmpty &&
+      _givenNameController.text.isNotEmpty &&
+      _surnameController.text.isNotEmpty &&
+      _dateOfBirthController.text.isNotEmpty &&
+
+      _nationalityController.text.isNotEmpty &&
+      selectedPlaceOfBirth != null &&
+      selectedGender != null &&
+      selectedCitizenType != null &&
+      selectedReligion != null &&
+      _nationalIdController.text.isNotEmpty &&
+      _birthCertificateController.text.isNotEmpty &&
+      _professionController.text.isNotEmpty &&
+      _contactNoController.text.isNotEmpty &&
+      _emailController.text.isNotEmpty;
+}
+
+bool _validatePresentAddress() {
+  return _presentDistrictController.text.isNotEmpty &&
+      _presentPoliceStationController.text.isNotEmpty &&
+      _presentPostOfficeController.text.isNotEmpty &&
+      _presentPostalCodeController.text.isNotEmpty &&
+      _presentCityVillageHouseController.text.isNotEmpty &&
+      _presentRoadBlockSectorController.text.isNotEmpty;
+}
+
+bool _validatePermanentAddress() {
+  return _permanentDistrictController.text.isNotEmpty &&
+      _permanentPoliceStationController.text.isNotEmpty &&
+      _permanentPostOfficeController.text.isNotEmpty &&
+      _permanentPostalCodeController.text.isNotEmpty &&
+      _permanentCityVillageHouseController.text.isNotEmpty &&
+      _permanentRoadBlockSectorController.text.isNotEmpty;
+}
+
+bool _validatePaymentInfo() {
+  return true; // Update this if you need validation for the payment step.
+}
+
+bool _validateCurrentStep() {
+  switch (currentStep) {
+    case 1:
+      return _validatePersonalInfo();
+    case 2:
+      return _validatePresentAddress();
+    case 3:
+      return _validatePermanentAddress();
+    case 4:
+      return _validatePaymentInfo();
+    default:
+      return false;
   }
+}
 
 @override
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
       title: const Text('Start New Application'),
-      backgroundColor: const Color.fromARGB(122, 76, 175, 79), // Change AppBar color to green
+      backgroundColor: const Color.fromARGB(122, 76, 175, 79),
       leading: IconButton(
         icon: const Icon(Icons.arrow_back),
         onPressed: () {
@@ -158,7 +267,7 @@ Widget build(BuildContext context) {
       ),
     ),
     body: Container(
-      color: const Color.fromARGB(73, 19, 99, 32), // Set your desired theme color here
+      color: const Color.fromARGB(73, 19, 99, 32),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -174,75 +283,93 @@ Widget build(BuildContext context) {
                       currentStep = index + 1;
                     });
                   },
+                  onStepContinue: () {
+                    if (_validateCurrentStep()) {
+                      setState(() {
+                        currentStep++;
+                      });
+                    } else {
+                      if (!_formKey.currentState!.validate()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Please complete all required fields.')),
+                        );
+                      }
+                    }
+                  },
+                  onStepCancel: currentStep > 1
+                      ? () {
+                          setState(() {
+                            currentStep--;
+                          });
+                        }
+                      : null,
                   steps: [
                     Step(
-                      title: const Text('New Application'),
+                      title: const Text('Personal Information'),
                       content: Column(
                         children: [
-                          _buildTextField('Full Name'),
-                          _buildTextField('Given Name'),
-                          _buildTextField('Surname'),
-                          _buildDatePickerField('Date Of Birth'),
+                          _buildTextField('Full Name', _fullNameController),
+                          _buildTextField('Given Name', _givenNameController),
+                          _buildTextField('Surname', _surnameController),
+                          _buildDatePickerField('Date Of Birth', _dateOfBirthController),
                           _buildDropdownField('Country Of Birth', countries, 'Bangladesh'),
-                          _buildDropdownField('District Of Birth', districts, null),
-                          _buildTextField('Place Of Birth'),
+                          _buildTextField('Nationality', _nationalityController),
+                          _buildDropdownField('Place Of Birth', districts, null),
                           _buildRadioButtonField('Gender', ['Male', 'Female', 'Others']),
+                          _buildRadioButtonField('Type Of Citizen', ['Citizen by Birth', 'Naturalized Citizen']),
                           _buildAutoSuggestField('Religion', religions),
-                          _buildCitizenTypeField('Type Of Citizen', ['Citizen by Birth', 'Naturalized Citizen']),
                           _buildToggleIconField('Dual Citizenship Status', hasDualCitizenship),
+                          if (hasDualCitizenship) ...[
+                            _buildDropdownField('Country of Other Citizenship', countries, null),
+                            _buildTextField('Foreign Passport No', _foreignPassportNoController),
+                          ],
                           _buildToggleIconField('Marital Status', isMarried),
+                          if (isMarried) ...[
+                            _buildTextField('Spouse Name', _spouseNameController),
+                            _buildTextField('Spouse Nationality', _spouseNationalityController),
+                            _buildTextField('Spouse Profession', _spouseProfessionController),
+                            _buildTextField('Spouse Passport Number (if any)', _spousePassportNoController),
+                            _buildTextField('Spouse National ID', _spouseNationalIdController),
+                          ],
+                          _buildTextField('National ID No', _nationalIdController),
+                          _buildTextField('Birth Registration', _birthCertificateController),
+                          _buildTextField('Profession', _professionController),
+                          _buildTextField('Contact No', _contactNoController),
+                          _buildTextField('Email', _emailController),
                         ],
                       ),
                       isActive: currentStep >= 1,
                       state: currentStep > 1 ? StepState.complete : StepState.indexed,
                     ),
                     Step(
-                      title: const Text('Personal Information'),
+                      title: const Text('Present Address'),
                       content: Column(
                         children: [
-                          _buildTextField('National ID No'),
-                          _buildTextField('Birth Registration'),
-                          _buildDropdownField('Country Of Other Citizenship (If Any)', countries, null),
-                          _buildTextField('Foreign Passport No'),
-                          _buildTextField('Profession'),
-                          _buildTextField('Contact No'),
-                          _buildTextField('Email'),
+                          _buildTextField('District', _presentDistrictController),
+                          _buildTextField('Police Station', _presentPoliceStationController),
+                          _buildTextField('Post Office', _presentPostOfficeController),
+                          _buildTextField('Postal Code', _presentPostalCodeController),
+                          _buildTextField('City/Village/House', _presentCityVillageHouseController),
+                          _buildTextField('Road/Block/Sector', _presentRoadBlockSectorController),
                         ],
                       ),
                       isActive: currentStep >= 2,
                       state: currentStep > 2 ? StepState.complete : StepState.indexed,
                     ),
                     Step(
-                      title: const Text('Present Address'),
+                      title: const Text('Permanent Address'),
                       content: Column(
                         children: [
-                          _buildDropdownField('Country', countries, null),
-                          _buildTextField('District'),
-                          _buildTextField('Police Station'),
-                          _buildTextField('Post Office'),
-                          _buildTextField('Postal Code'),
-                          _buildTextField('City/Village/House'),
-                          _buildTextField('Road/Block/Sector'),
+                          _buildTextField('District', _permanentDistrictController),
+                          _buildTextField('Police Station', _permanentPoliceStationController),
+                          _buildTextField('Post Office', _permanentPostOfficeController),
+                          _buildTextField('Postal Code', _permanentPostalCodeController),
+                          _buildTextField('City/Village/House', _permanentCityVillageHouseController),
+                          _buildTextField('Road/Block/Sector', _permanentRoadBlockSectorController),
                         ],
                       ),
                       isActive: currentStep >= 3,
                       state: currentStep > 3 ? StepState.complete : StepState.indexed,
-                    ),
-                    Step(
-                      title: const Text('Permanent Address'),
-                      content: Column(
-                        children: [
-                          _buildDropdownField('Country', countries, null),
-                          _buildTextField('District'),
-                          _buildTextField('Police Station'),
-                          _buildTextField('Post Office'),
-                          _buildTextField('Postal Code'),
-                          _buildTextField('City/Village/House'),
-                          _buildTextField('Road/Block/Sector'),
-                        ],
-                      ),
-                      isActive: currentStep >= 4,
-                      state: currentStep > 4 ? StepState.complete : StepState.indexed,
                     ),
                     Step(
                       title: const Text('Payment'),
@@ -262,47 +389,53 @@ Widget build(BuildContext context) {
                           const SizedBox(height: 16.0),
                           _buildPaymentOption('Nagad', 'images/nagad.png'),
                           const SizedBox(height: 24.0),
-                          const Text(
-                            'Enter Payment Details',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green,
-                            ),
-                          ),
-                          _buildTextField('Card Number'),
-                          _buildTextField('Cardholder Name'),
-                          _buildTextField('Expiry Date'),
-                          _buildTextField('CVV'),
                         ],
                       ),
-                      isActive: currentStep >= 5,
-                      state: currentStep > 5 ? StepState.complete : StepState.indexed,
+                      isActive: currentStep >= 4,
+                      state: currentStep > 4 ? StepState.complete : StepState.indexed,
                     ),
                   ],
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: submitApplication,
-                  child: const Text('Submit Application'),
-                ),
-                ],
-              ),
+                if (currentStep == 4) // Show the submit button only on the last step
+                  ElevatedButton(
+                    onPressed: _formKey.currentState!.validate()
+                        ? () {
+                            submitApplication();
+                          }
+                        : null,
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.all<Color>(
+                        _formKey.currentState!.validate() ? Colors.green : Colors.grey,
+                      ),
+                    ),
+                    child: const Text('Submit Application'),
+                  ),
+              ],
             ),
           ),
         ),
       ),
-    );
-  }
-
-Widget _buildTextField(String label) {
-  return TextFormField(
-    decoration: InputDecoration(labelText: label),
+    ),
   );
 }
 
-Widget _buildDatePickerField(String label) {
+Widget _buildTextField(String label, TextEditingController controller) {
   return TextFormField(
+    controller: controller,
+    decoration: InputDecoration(labelText: label),
+    validator: (value) {
+      if (value == null || value.isEmpty) {
+        return 'Please enter $label';
+      }
+      return null;
+    },
+  );
+}
+
+Widget _buildDatePickerField(String label, TextEditingController controller) {
+  return TextFormField(
+    controller: _dateOfBirthController,
     decoration: InputDecoration(labelText: label),
     readOnly: true,
     onTap: () async {
@@ -315,13 +448,20 @@ Widget _buildDatePickerField(String label) {
       if (pickedDate != null) {
         setState(() {
           selectedDate = pickedDate;
+          _dateOfBirthController.text = "${pickedDate.toLocal()}".split(' ')[0];
         });
       }
+    },
+    validator: (value) {
+      if (selectedDate == null) {
+        return 'Please select $label';
+      }
+      return null;
     },
   );
 }
 
-Widget _buildDropdownField(String label, List<String> items, String? initialValue) {
+Widget _buildDropdownField(String label, List<String> items, String? initialValue,) {
   return DropdownButtonFormField<String>(
     decoration: InputDecoration(labelText: label),
     value: initialValue,
@@ -335,10 +475,18 @@ Widget _buildDropdownField(String label, List<String> items, String? initialValu
       setState(() {
         if (label == 'Country Of Birth') {
           selectedCountry = newValue;
-        } else if (label == 'District Of Birth') {
-          selectedDistrict = newValue;
+        } else if (label == 'Place Of Birth') {
+          selectedPlaceOfBirth = newValue;
+        } else if (label == 'Country of Other Citizenship') {
+          selectedotherCitizenship = newValue;
         }
       });
+    },
+    validator: (value) {
+      if (value == null || value.isEmpty) {
+        return 'Please select $label';
+      }
+      return null;
     },
   );
 }
@@ -354,10 +502,14 @@ Widget _buildRadioButtonField(String label, List<String> options) {
             child: RadioListTile<String>(
               title: Text(option),
               value: option,
-              groupValue: selectedGender,
+              groupValue: label == 'Gender' ? selectedGender : selectedCitizenType,
               onChanged: (value) {
                 setState(() {
-                  selectedGender = value;
+                  if (label == 'Gender') {
+                    selectedGender = value;
+                  } else {
+                    selectedCitizenType = value;
+                  }
                 });
               },
             ),
@@ -369,43 +521,41 @@ Widget _buildRadioButtonField(String label, List<String> options) {
 }
 
 Widget _buildAutoSuggestField(String label, List<String> suggestions) {
-  return TextFormField(
-    decoration: InputDecoration(labelText: label),
-    onChanged: (value) {
-      setState(() {
-        selectedReligion = value;
+  return Autocomplete<String>(
+    optionsBuilder: (TextEditingValue textEditingValue) {
+      if (textEditingValue.text.isEmpty) {
+        return const Iterable<String>.empty();
+      }
+      return suggestions.where((String option) {
+        return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
       });
+    },
+    onSelected: (String selection) {
+      setState(() {
+        selectedReligion = selection;
+      });
+    },
+    fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
+      return TextFormField(
+        controller: textEditingController,
+        focusNode: focusNode,
+        decoration: InputDecoration(labelText: label),
+        onChanged: (value) {
+          setState(() {
+            selectedReligion = value;
+          });
+        },
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter $label';
+          }
+          return null;
+        },
+      );
     },
   );
 }
 
-String? selectedCitizenType;
-
-Widget _buildCitizenTypeField(String labelText, List<String> options) {
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 8.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(labelText, style: const TextStyle(fontSize: 16)),
-        Column(
-          children: options.map((option) {
-            return RadioListTile<String>(
-              title: Text(option),
-              value: option,
-              groupValue: selectedCitizenType,
-              onChanged: (value) {
-                setState(() {
-                  selectedCitizenType = value;
-                });
-              },
-            );
-          }).toList(),
-        ),
-      ],
-    ),
-  );
-}
 
 Widget _buildPaymentOption(String label, String imagePath) {
   return GestureDetector(
@@ -471,31 +621,36 @@ Widget _buildToggleIconField(String labelText, bool value) {
 
   return Padding(
     padding: const EdgeInsets.only(bottom: 8.0),
-    child: ListTile(
-      title: Text(labelText, style: const TextStyle(fontSize: 16)),
-      trailing: GestureDetector(
-        onTap: () {
-          setState(() {
-            if (labelText == 'Dual Citizenship Status') {
-              hasDualCitizenship = !hasDualCitizenship;
-            } else if (labelText == 'Marital Status') {
-              isMarried = !isMarried;
-            }
-          });
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.0),
-            color: value ? Colors.blue : Colors.grey, // Background color changes based on state
-          ),
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset(
-            value ? activeImage : inactiveImage,
-            width: 24,
-            height: 24,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListTile(
+          title: Text(labelText, style: const TextStyle(fontSize: 16)),
+          trailing: GestureDetector(
+            onTap: () {
+              setState(() {
+                if (labelText == 'Dual Citizenship Status') {
+                  hasDualCitizenship = !hasDualCitizenship;
+                } else if (labelText == 'Marital Status') {
+                  isMarried = !isMarried;
+                }
+              });
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.0),
+                color: value ? Colors.blue : Colors.grey,
+              ),
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(
+                value ? activeImage : inactiveImage,
+                width: 24,
+                height: 24,
+              ),
+            ),
           ),
         ),
-      ),
+      ],
     ),
   );
 }
