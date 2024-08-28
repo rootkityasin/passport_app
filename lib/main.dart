@@ -13,7 +13,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   AwesomeNotifications().initialize(
-    'asset://assets/logo.png', // The notification icon should be null if you want to use the default app icon
+    'asset://assets/logo.png',
     [
       NotificationChannel(
         channelKey: 'user_channel',
