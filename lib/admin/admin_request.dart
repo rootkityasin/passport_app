@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pms_flutter_app/admin/RequestView.dart';
 
 class AdminRequest extends StatefulWidget {
-  const AdminRequest({Key? key}) : super(key: key);
+  const AdminRequest({super.key});
 
   @override
   AdminDashboardState createState() => AdminDashboardState();
@@ -96,9 +96,9 @@ class AdminDashboardState extends State<AdminRequest> {
                                           color: Colors.white,
                                           borderRadius:
                                               BorderRadius.circular(30)),
-                                      child: Icon(Icons.people),
+                                      child: const Icon(Icons.people),
                                     ),
-                                    Text(
+                                    const Text(
                                       "Mohammad Salman",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -106,8 +106,8 @@ class AdminDashboardState extends State<AdminRequest> {
                                     )
                                   ],
                                 ),
-                                SizedBox(height: 40),
-                                Row(
+                                const SizedBox(height: 40),
+                                const Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
@@ -125,7 +125,7 @@ class AdminDashboardState extends State<AdminRequest> {
                                     )
                                   ],
                                 ),
-                                SizedBox(height: 30),
+                                const SizedBox(height: 30),
                                 Center(
                                   child: ElevatedButton(
                                     onPressed: () {

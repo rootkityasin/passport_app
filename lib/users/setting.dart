@@ -221,14 +221,14 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Success'),
-          content: Text('User data updated successfully!'),
+          title: const Text('Success'),
+          content: const Text('User data updated successfully!'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -241,14 +241,14 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error'),
-          content: Text('Failed to update user data. Please try again.'),
+          title: const Text('Error'),
+          content: const Text('Failed to update user data. Please try again.'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -315,7 +315,7 @@ class _SettingsPageState extends State<SettingsPage> {
         body: 'This notification is scheduled for 5 minutes later.',
       ),
       schedule: NotificationCalendar.fromDate(
-        date: DateTime.now().add(Duration(minutes: 5)),
+        date: DateTime.now().add(const Duration(minutes: 5)),
       ),
     );
 
@@ -328,7 +328,7 @@ class _SettingsPageState extends State<SettingsPage> {
         body: 'This notification is scheduled for 1 hour later.',
       ),
       schedule: NotificationCalendar.fromDate(
-        date: DateTime.now().add(Duration(hours: 1)),
+        date: DateTime.now().add(const Duration(hours: 1)),
       ),
     );
   }
@@ -507,7 +507,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 CircleAvatar(
                   backgroundImage: _imageFile != null
                       ? FileImage(_imageFile!) // Display selected image
-                      : AssetImage('images/govt.png')
+                      : const AssetImage('images/govt.png')
                           as ImageProvider, // Default image
                   radius: 40, // Adjust the radius if needed
                 ),

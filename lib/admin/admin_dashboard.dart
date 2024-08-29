@@ -4,7 +4,7 @@ import 'package:pms_flutter_app/admin/admin_request.dart';
 
 class AdminDashboard extends StatefulWidget {
   final String token;
-  const AdminDashboard({required this.token, Key? key}) : super(key: key);
+  const AdminDashboard({required this.token, super.key});
 
   @override
   AdminDashboardState createState() => AdminDashboardState();

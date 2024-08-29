@@ -309,7 +309,7 @@ Widget build(BuildContext context) {
                     } else {
                       if (!_formKey.currentState!.validate()) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Please complete all required fields.')),
+                          const SnackBar(content: Text('Please complete all required fields.')),
                         );
                       }
                     }
