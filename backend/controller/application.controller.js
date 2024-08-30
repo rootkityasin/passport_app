@@ -2,7 +2,7 @@ const ApplicationService = require('../services/application.services');
 
 exports.apply = async (req, res, next) => {
     try {
-        const { applicationData } = req.body;
+        const { userId,applicationData } = req.body;
 
         // Basic validation
         const requiredFields = ['personalInfo', 'presentAddress', 'permanentAddress'];
@@ -21,6 +21,23 @@ exports.apply = async (req, res, next) => {
         });
     } catch (error) {
         console.error("Error in apply controller: ", error);
+        res.status(500).json({
+            status: false,
+            message: error.message
+        });
+    }
+};
+
+exports.getAllApplications = async (req, res, next) => {
+    try {
+        const applications = await ApplicationService.getAllApplications();
+
+        res.json({
+            status: true,
+            applications
+        });
+    } catch (error) {
+        console.error("Error in getAllApplications controller: ", error);
         res.status(500).json({
             status: false,
             message: error.message
