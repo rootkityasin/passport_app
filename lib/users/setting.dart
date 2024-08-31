@@ -67,9 +67,9 @@ class _SettingsPageState extends State<SettingsPage> {
     _passwordVisible = false;
     _decodeTokenAndFetchUserData();
 
-    // Set up listeners to update full name controller when first or last name changes
-    _firstNameController.addListener(_updateFullName);
-    _lastNameController.addListener(_updateFullName);
+    // // Set up listeners to update full name controller when first or last name changes
+    // _firstNameController.addListener(_updateFullName);
+    // _lastNameController.addListener(_updateFullName);
 
     // AwesomeNotifications().actionStream.listen((receivedNotification) {
     //   if (receivedNotification.buttonKeyPressed == 'REPLY') {
@@ -82,10 +82,12 @@ class _SettingsPageState extends State<SettingsPage> {
     // });
   }
 
-  void _updateFullName() {
-    _fullNameController.text =
-        '${_firstNameController.text} ${_lastNameController.text}';
-  }
+  // void _updateFullName() {
+  //   setState(() {
+  //     _fullNameController.text =
+  //         '${_firstNameController.text} ${_lastNameController.text}';
+  //   });
+  // }
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? picked = await showDatePicker(
@@ -156,9 +158,9 @@ class _SettingsPageState extends State<SettingsPage> {
           email = userData['email'] ?? '';
           fname = userData['fname'] ?? '';
           lname = userData['lname'] ?? '';
-          _firstNameController.text = userData['fname'] ?? '';
-          _lastNameController.text = userData['lname'] ?? '';
-          _updateFullName();
+          _firstNameController.text = fname;
+          _lastNameController.text = lname;
+          // _updateFullName();
           _emailController.text = userData['email'];
           _dobController.text = userData['dob'];
 
@@ -290,7 +292,7 @@ class _SettingsPageState extends State<SettingsPage> {
     AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: 1,
-        channelKey: 'user_channel',
+        channelKey: 'basic_channel',
         title: 'Immediate Notification',
         body: 'This is an immediate notification.',
       ),
@@ -310,7 +312,7 @@ class _SettingsPageState extends State<SettingsPage> {
     AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: 2,
-        channelKey: 'user_channel',
+        channelKey: 'basic_channel',
         title: '5 Minutes Later',
         body: 'This notification is scheduled for 5 minutes later.',
       ),
@@ -323,7 +325,7 @@ class _SettingsPageState extends State<SettingsPage> {
     AwesomeNotifications().createNotification(
       content: NotificationContent(
         id: 3,
-        channelKey: 'user_channel',
+        channelKey: 'basic_channel',
         title: '1 Hour Later',
         body: 'This notification is scheduled for 1 hour later.',
       ),
@@ -334,24 +336,24 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _pickImage() async {
-    // final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    //
-    // if (pickedFile != null) {
-    //   setState(() {
-    //     _imageFile = File(pickedFile.path); // Update state with selected image
-    //   });
-    // }
-    // Open the file picker
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.image, // Specify that we are only picking image files
-    );
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
-    if (result != null && result.files.single.path != null) {
+    if (pickedFile != null) {
       setState(() {
-        _imageFile =
-            File(result.files.single.path!); // Update state with selected image
+        _imageFile = File(pickedFile.path); // Update state with selected image
       });
     }
+    // Open the file picker
+    // FilePickerResult? result = await FilePicker.platform.pickFiles(
+    //   type: FileType.image, // Specify that we are only picking image files
+    // );
+    //
+    // if (result != null && result.files.single.path != null) {
+    //   setState(() {
+    //     _imageFile =
+    //         File(result.files.single.path!); // Update state with selected image
+    //   });
+    // }
   }
 
   @override
@@ -397,9 +399,10 @@ class _SettingsPageState extends State<SettingsPage> {
             UserAccountsDrawerHeader(
               accountName: Text("$fname $lname"),
               accountEmail: Text(email),
-              currentAccountPicture: const CircleAvatar(
-                backgroundImage: AssetImage('images/govt.png'),
-              ),
+              currentAccountPicture: CircleAvatar(
+                  backgroundImage: _imageFile != null
+                      ? FileImage(_imageFile!) // Display selected image
+                      : AssetImage('images/govt.png')),
               decoration: const BoxDecoration(
                 color: Colors.teal, // Background color of the header
               ),
@@ -668,9 +671,16 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _buildEditProfile() {
     return ListView(
       children: [
+        const SizedBox(height: 10),
         TextFormField(
-          controller: _fullNameController,
-          decoration: const InputDecoration(labelText: 'Your Name'),
+          controller: _firstNameController,
+          decoration: const InputDecoration(labelText: 'First Name'),
+          readOnly: !isEditing,
+          // initialValue: 'Charline Read',
+        ),
+        TextFormField(
+          controller: _lastNameController,
+          decoration: const InputDecoration(labelText: 'Last Name'),
           readOnly: !isEditing,
           // initialValue: 'Charline Read',
         ),
@@ -771,26 +781,25 @@ class _SettingsPageState extends State<SettingsPage> {
             return null;
           },
         ),
-        const SizedBox(height: 20),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: isEditing
-                ? _updateUserData
-                : null, // Save profile only if editing,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              padding: const EdgeInsets.all(16.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-            child: const Text(
-              'Save',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
+        const SizedBox(height: 20), // SizedBox(
+        //   width: double.infinity,
+        //   child: ElevatedButton(
+        //     onPressed: isEditing
+        //         ? _updateUserData
+        //         : null, // Save profile only if editing,
+        //     style: ElevatedButton.styleFrom(
+        //       backgroundColor: Colors.green,
+        //       padding: const EdgeInsets.all(16.0),
+        //       shape: RoundedRectangleBorder(
+        //         borderRadius: BorderRadius.circular(10.0),
+        //       ),
+        //     ),
+        //     child: const Text(
+        //       'Save',
+        //       style: TextStyle(color: Colors.white),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

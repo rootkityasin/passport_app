@@ -3,6 +3,10 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:convert'; // For jsonDecode
 import 'package:http/http.dart' as http; // For making HTTP requests
 import 'package:pms_flutter_app/users/setting.dart';
+import 'package:badges/badges.dart';
+import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 import 'apply.dart';
 import '../config.dart';
 import 'reissue.dart';
@@ -24,6 +28,9 @@ class _UserDashboardState extends State<UserDashboard> {
   late String lname = '';
   late String userId = '';
   bool hasNewNotification = true;
+
+  File? _imageFile; // File to hold the selected image
+  final picker = ImagePicker(); // ImagePicker instance
 
   @override
   void initState() {
@@ -61,6 +68,12 @@ class _UserDashboardState extends State<UserDashboard> {
     }
   }
 
+  // List of pages corresponding to each BottomNavigationBar item
+  final List<Widget> _pages = [
+    UserDashboard(token: 'test_token'),
+    SettingsPage(token: 'test_token'),
+  ];
+
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -75,6 +88,27 @@ class _UserDashboardState extends State<UserDashboard> {
     setState(() {
       hasNewNotification = false;
     });
+  }
+
+  Future<void> _pickImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path); // Update state with selected image
+      });
+    }
+    // Open the file picker
+    // FilePickerResult? result = await FilePicker.platform.pickFiles(
+    //   type: FileType.image, // Specify that we are only picking image files
+    // );
+    //
+    // if (result != null && result.files.single.path != null) {
+    //   setState(() {
+    //     _imageFile =
+    //         File(result.files.single.path!); // Update state with selected image
+    //   });
+    // }
   }
 
   @override
@@ -107,9 +141,10 @@ class _UserDashboardState extends State<UserDashboard> {
             UserAccountsDrawerHeader(
               accountName: Text("$fname $lname"),
               accountEmail: Text(email),
-              currentAccountPicture: const CircleAvatar(
-                backgroundImage: AssetImage('images/govt.png'),
-              ),
+              currentAccountPicture: CircleAvatar(
+                  backgroundImage: _imageFile != null
+                      ? FileImage(_imageFile!) // Display selected image
+                      : AssetImage('images/govt.png')),
               decoration: const BoxDecoration(
                 color: Colors.teal, // Background color of the header
               ),
@@ -369,6 +404,7 @@ class _UserDashboardState extends State<UserDashboard> {
             label: '',
           ),
         ],
+
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         selectedItemColor: Colors.green, // Color for the selected item

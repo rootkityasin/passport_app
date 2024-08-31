@@ -16,7 +16,7 @@ void main() {
     'asset://assets/logo.png',
     [
       NotificationChannel(
-        channelKey: 'user_channel',
+        channelKey: 'basic_channel',
         channelName: 'User Notifications',
         channelDescription: 'Notifications for general users',
         defaultColor: Colors.blue,
