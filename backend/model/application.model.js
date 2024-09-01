@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
-
+const UserModel = require("../model/user.model");
+const { Schema } = mongoose;
 const ApplicationSchema = new mongoose.Schema({
-
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' } ,
     personalInfo: {
         fullName: { type: String, required: true },
         givenName: { type: String, required: true },

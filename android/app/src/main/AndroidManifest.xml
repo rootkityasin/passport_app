@@ -8,15 +8,17 @@
 
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="false" />
+        android:required="true" />
     <application
         android:label="pms_flutter_app"
-        android:name="${applicationName}"
+        android:name="io.flutter.app.FlutterApplication"
         android:icon="@mipmap/ic_launcher">
 
         <!-- Receiver for Awesome Notifications -->
         <receiver android:name="me.carda.awesome_notifications.notifications.receivers.ActionReceiver"
             android:exported="true" />
+
+
 
         <activity
             android:name=".MainActivity"
