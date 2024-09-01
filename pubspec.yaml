@@ -82,6 +82,9 @@ flutter:
     - images/nagad.png
     - images/wahab.png
     - images/logo.png
+    - images/mrp.jpg
+    - images/epp.jpg
+    - images/no_passport.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
