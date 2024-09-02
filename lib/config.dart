@@ -1,4 +1,4 @@
-const url = 'http://192.168.0.110:3000/';
+const url = 'http://localhost:3000/';
 const registration = "${url}api/users/register";
 const login = "${url}api/users/login";
 const adminregistration = "${url}api/admin/register";

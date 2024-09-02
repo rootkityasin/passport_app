@@ -672,4 +672,4 @@ Widget _buildToggleIconField(String labelText, bool value) {
     ),
   );
 }
-}
+}  

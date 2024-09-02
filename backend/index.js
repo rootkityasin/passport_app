@@ -10,6 +10,6 @@ app.get('/', (req, res) => {
      res.send("Hello World");
 });
 
-app.listen(PORT, () => {
-     console.log(`Server Listening on Port http://192.168.0.110:${PORT}`);
+app.listen(PORT,'0.0.0.0', () => {
+     console.log(`Server Listening on Port http://localhost:${PORT}`);
 });
