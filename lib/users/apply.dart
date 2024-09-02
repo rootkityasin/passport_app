@@ -182,11 +182,9 @@ class _ApplyPageState extends State<ApplyPage> {
         };
         print(jsonEncode(wrappedResponse));
 
-        // Show a success Snackbar
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Application submitted successfully!')),
       );
-// Show an alert dialog
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
