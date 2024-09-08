@@ -48,7 +48,9 @@ class _LoginPageState extends State<LoginPage> {
             MaterialPageRoute(
                 builder: (context) => UserDashboard(token: mytoken)));
       } else {
-        print('Something is wrong');
+        ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(jsonResponse['message'] ?? 'Login failed')),
+        );
       }
     }
   }
@@ -73,7 +75,9 @@ class _LoginPageState extends State<LoginPage> {
             MaterialPageRoute(
                 builder: (context) => AdminDashboard(token: mytoken)));
       } else {
-        print('Something is wrong');
+        ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(jsonResponse['message'] ?? 'Login failed')),
+       );
       }
     }
   }
@@ -98,7 +102,9 @@ class _LoginPageState extends State<LoginPage> {
             MaterialPageRoute(
                 builder: (context) => PoliceDashboard(token: mytoken)));
       } else {
-        print('Something is wrong');
+        ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(jsonResponse['message'] ?? 'Login failed')),
+       );
       }
     }
   }
