@@ -407,7 +407,7 @@ class _MissingLostPageState extends State<MissingLostPage> {
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
           labelText: label,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
         ),
         value: initialValue,
         items: items
@@ -462,7 +462,7 @@ class _MissingLostPageState extends State<MissingLostPage> {
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
           suffixIcon: const Icon(Icons.calendar_today),
           filled: fillColor != null,
           fillColor: fillColor,
@@ -475,7 +475,7 @@ class _MissingLostPageState extends State<MissingLostPage> {
         ),
         readOnly: readOnly,
         onTap: readOnly ? null : () => _selectDate(context, controller),
-        style: TextStyle(color: Colors.black),
+        style: const TextStyle(color: Colors.black),
         validator: validator,
       ),
     );

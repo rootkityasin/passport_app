@@ -167,10 +167,10 @@ class RequestviewState extends State<Requestview> {
               const SizedBox(height: 10),
               Text('Email: $email', style: const TextStyle(fontSize: 16)),
               const SizedBox(height: 20),
-              Text(
+              const Text(
                 'Present Address',
                 style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               Text('District: $districtPresent',
@@ -189,10 +189,10 @@ class RequestviewState extends State<Requestview> {
               const SizedBox(height: 10),
               Text('Road: $roadPresent', style: const TextStyle(fontSize: 16)),
               const SizedBox(height: 20),
-              Text(
+              const Text(
                 'Permanent Address',
                 style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               Text('District: $districtPermanent',

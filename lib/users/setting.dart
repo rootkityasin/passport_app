@@ -402,7 +402,7 @@ class _SettingsPageState extends State<SettingsPage> {
               currentAccountPicture: CircleAvatar(
                   backgroundImage: _imageFile != null
                       ? FileImage(_imageFile!) // Display selected image
-                      : AssetImage('images/govt.png')),
+                      : const AssetImage('images/govt.png')),
               decoration: const BoxDecoration(
                 color: Colors.teal, // Background color of the header
               ),

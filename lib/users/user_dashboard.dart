@@ -70,8 +70,8 @@ class _UserDashboardState extends State<UserDashboard> {
 
   // List of pages corresponding to each BottomNavigationBar item
   final List<Widget> _pages = [
-    UserDashboard(token: 'test_token'),
-    SettingsPage(token: 'test_token'),
+    const UserDashboard(token: 'test_token'),
+    const SettingsPage(token: 'test_token'),
   ];
 
   int _selectedIndex = 0;
@@ -144,7 +144,7 @@ class _UserDashboardState extends State<UserDashboard> {
               currentAccountPicture: CircleAvatar(
                   backgroundImage: _imageFile != null
                       ? FileImage(_imageFile!) // Display selected image
-                      : AssetImage('images/govt.png')),
+                      : const AssetImage('images/govt.png')),
               decoration: const BoxDecoration(
                 color: Colors.teal, // Background color of the header
               ),
