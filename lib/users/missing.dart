@@ -14,10 +14,13 @@ class _MissingLostPageState extends State<MissingLostPage> {
   final _formKey = GlobalKey<FormState>();
   String selectedCardText = 'Yes, I have a Machine Readable Passport (MRP)';
   final TextEditingController _reportedDateController = TextEditingController();
-  final TextEditingController _previousPassportNumberController = TextEditingController();
+  final TextEditingController _previousPassportNumberController =
+      TextEditingController();
   final TextEditingController _dateOfIssueController = TextEditingController();
-  final TextEditingController _dateOfExpirationController = TextEditingController();
-  final TextEditingController _policeCaseNumberController = TextEditingController();
+  final TextEditingController _dateOfExpirationController =
+      TextEditingController();
+  final TextEditingController _policeCaseNumberController =
+      TextEditingController();
   String? _selectedReissueReason;
   String? _selectedCountry;
   String? _selectedDistrict;
@@ -26,15 +29,228 @@ class _MissingLostPageState extends State<MissingLostPage> {
   String selectedOtherCountryOption = "No, I don't have";
 
   List<String> _getDistricts() {
-    return ['Dhaka', 'Chittagong', 'Rajshahi', 'Sylhet', 'Khulna', 'Barisal', 'Rangpur', 'Mymensingh'];
+    return [
+      'Dhaka',
+      'Chittagong',
+      'Rajshahi',
+      'Sylhet',
+      'Khulna',
+      'Barisal',
+      'Rangpur',
+      'Mymensingh'
+    ];
   }
 
   List<String> _getPoliceStations() {
-    return ['Gulshan', 'Dhanmondi', 'Khilgaon', 'Mirpur', 'Kotwali', 'Tejgaon', 'Motijheel', 'Uttara'];
+    return [
+      'Gulshan',
+      'Dhanmondi',
+      'Khilgaon',
+      'Mirpur',
+      'Kotwali',
+      'Tejgaon',
+      'Motijheel',
+      'Uttara'
+    ];
   }
 
   List<String> _getCountries() {
-    return ['Bangladesh', 'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cabo Verde', 'Cambodia', 'Cameroon', 'Canada', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Eswatini', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Grenada', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kiribati', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Mauritania', 'Mauritius', 'Mexico', 'Micronesia', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'North Korea', 'North Macedonia', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Palestine', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russia', 'Rwanda', 'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Vincent and the Grenadines', 'Samoa', 'San Marino', 'Sao Tome and Principe', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Korea', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Timor-Leste', 'Togo', 'Tonga', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'];
+    return [
+      'Bangladesh',
+      'Afghanistan',
+      'Albania',
+      'Algeria',
+      'Andorra',
+      'Angola',
+      'Antigua and Barbuda',
+      'Argentina',
+      'Armenia',
+      'Australia',
+      'Austria',
+      'Azerbaijan',
+      'Bahamas',
+      'Bahrain',
+      'Barbados',
+      'Belarus',
+      'Belgium',
+      'Belize',
+      'Benin',
+      'Bhutan',
+      'Bolivia',
+      'Bosnia and Herzegovina',
+      'Botswana',
+      'Brazil',
+      'Brunei',
+      'Bulgaria',
+      'Burkina Faso',
+      'Burundi',
+      'Cabo Verde',
+      'Cambodia',
+      'Cameroon',
+      'Canada',
+      'Central African Republic',
+      'Chad',
+      'Chile',
+      'China',
+      'Colombia',
+      'Comoros',
+      'Congo',
+      'Costa Rica',
+      'Croatia',
+      'Cuba',
+      'Cyprus',
+      'Czech Republic',
+      'Denmark',
+      'Djibouti',
+      'Dominica',
+      'Dominican Republic',
+      'Ecuador',
+      'Egypt',
+      'El Salvador',
+      'Equatorial Guinea',
+      'Eritrea',
+      'Estonia',
+      'Eswatini',
+      'Ethiopia',
+      'Fiji',
+      'Finland',
+      'France',
+      'Gabon',
+      'Gambia',
+      'Georgia',
+      'Germany',
+      'Ghana',
+      'Greece',
+      'Grenada',
+      'Guatemala',
+      'Guinea',
+      'Guinea-Bissau',
+      'Guyana',
+      'Haiti',
+      'Honduras',
+      'Hungary',
+      'Iceland',
+      'India',
+      'Indonesia',
+      'Iran',
+      'Iraq',
+      'Ireland',
+      'Israel',
+      'Italy',
+      'Jamaica',
+      'Japan',
+      'Jordan',
+      'Kazakhstan',
+      'Kenya',
+      'Kiribati',
+      'Kuwait',
+      'Kyrgyzstan',
+      'Laos',
+      'Latvia',
+      'Lebanon',
+      'Lesotho',
+      'Liberia',
+      'Libya',
+      'Liechtenstein',
+      'Lithuania',
+      'Luxembourg',
+      'Madagascar',
+      'Malawi',
+      'Malaysia',
+      'Maldives',
+      'Mali',
+      'Malta',
+      'Marshall Islands',
+      'Mauritania',
+      'Mauritius',
+      'Mexico',
+      'Micronesia',
+      'Moldova',
+      'Monaco',
+      'Mongolia',
+      'Montenegro',
+      'Morocco',
+      'Mozambique',
+      'Myanmar',
+      'Namibia',
+      'Nauru',
+      'Nepal',
+      'Netherlands',
+      'New Zealand',
+      'Nicaragua',
+      'Niger',
+      'Nigeria',
+      'North Korea',
+      'North Macedonia',
+      'Norway',
+      'Oman',
+      'Pakistan',
+      'Palau',
+      'Palestine',
+      'Panama',
+      'Papua New Guinea',
+      'Paraguay',
+      'Peru',
+      'Philippines',
+      'Poland',
+      'Portugal',
+      'Qatar',
+      'Romania',
+      'Russia',
+      'Rwanda',
+      'Saint Kitts and Nevis',
+      'Saint Lucia',
+      'Saint Vincent and the Grenadines',
+      'Samoa',
+      'San Marino',
+      'Sao Tome and Principe',
+      'Saudi Arabia',
+      'Senegal',
+      'Serbia',
+      'Seychelles',
+      'Sierra Leone',
+      'Singapore',
+      'Slovakia',
+      'Slovenia',
+      'Solomon Islands',
+      'Somalia',
+      'South Africa',
+      'South Korea',
+      'South Sudan',
+      'Spain',
+      'Sri Lanka',
+      'Sudan',
+      'Suriname',
+      'Sweden',
+      'Switzerland',
+      'Syria',
+      'Taiwan',
+      'Tajikistan',
+      'Tanzania',
+      'Thailand',
+      'Timor-Leste',
+      'Togo',
+      'Tonga',
+      'Trinidad and Tobago',
+      'Tunisia',
+      'Turkey',
+      'Turkmenistan',
+      'Tuvalu',
+      'Uganda',
+      'Ukraine',
+      'United Arab Emirates',
+      'United Kingdom',
+      'United States',
+      'Uruguay',
+      'Uzbekistan',
+      'Vanuatu',
+      'Vatican City',
+      'Venezuela',
+      'Vietnam',
+      'Yemen',
+      'Zambia',
+      'Zimbabwe'
+    ];
   }
 
   @override
@@ -60,9 +276,11 @@ class _MissingLostPageState extends State<MissingLostPage> {
       'district': _selectedDistrict,
       'policeStation': _selectedPoliceStation,
       'reportedDate': _reportedDateController.text,
-      'previousPassportNumber': checkboxValue ? null : _previousPassportNumberController.text,
+      'previousPassportNumber':
+          checkboxValue ? null : _previousPassportNumberController.text,
       'dateOfIssue': checkboxValue ? null : _dateOfIssueController.text,
-      'dateOfExpiration': checkboxValue ? null : _dateOfExpirationController.text,
+      'dateOfExpiration':
+          checkboxValue ? null : _dateOfExpirationController.text,
       'unknownPreviousPassportData': checkboxValue,
       'otherCountryPassport': selectedOtherCountryOption,
     };
@@ -195,7 +413,8 @@ class _MissingLostPageState extends State<MissingLostPage> {
                           const SizedBox(height: 30),
                           const Text(
                             'What is the reason of your passport request?',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 20),
                           _buildDropdownField(
@@ -210,7 +429,8 @@ class _MissingLostPageState extends State<MissingLostPage> {
                           const SizedBox(height: 30),
                           const Text(
                             'Details of the Lost/Stolen passport?',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           _buildDropdownField(
                             'Country of Police Station',
@@ -229,7 +449,6 @@ class _MissingLostPageState extends State<MissingLostPage> {
                             onFieldSubmitted: (_) {
                               FocusScope.of(context).nextFocus();
                             },
-                            
                           ),
                           _buildDropdownField(
                             'Select district',
@@ -264,7 +483,8 @@ class _MissingLostPageState extends State<MissingLostPage> {
                             },
                             fillColor: Colors.grey[300], // Grey color
                             validator: (value) {
-                              if (!checkboxValue && (value == null || value.isEmpty)) {
+                              if (!checkboxValue &&
+                                  (value == null || value.isEmpty)) {
                                 return 'Please enter previous passport number';
                               }
                               return null;
@@ -280,7 +500,8 @@ class _MissingLostPageState extends State<MissingLostPage> {
                                   readOnly: checkboxValue,
                                   fillColor: Colors.grey[300], // Grey color
                                   validator: (value) {
-                                    if (!checkboxValue && (value == null || value.isEmpty)) {
+                                    if (!checkboxValue &&
+                                        (value == null || value.isEmpty)) {
                                       return 'Please select date of issue';
                                     }
                                     return null;
@@ -296,7 +517,8 @@ class _MissingLostPageState extends State<MissingLostPage> {
                                   readOnly: checkboxValue,
                                   fillColor: Colors.grey[300], // Grey color
                                   validator: (value) {
-                                    if (!checkboxValue && (value == null || value.isEmpty)) {
+                                    if (!checkboxValue &&
+                                        (value == null || value.isEmpty)) {
                                       return 'Please select date of expiration';
                                     }
                                     return null;
@@ -320,7 +542,8 @@ class _MissingLostPageState extends State<MissingLostPage> {
                                   });
                                 },
                               ),
-                              const Text("I don't know the data of the previous passport"),
+                              const Text(
+                                  "I don't know the data of the previous passport"),
                             ],
                           ),
                           const SizedBox(height: 30),
@@ -334,21 +557,22 @@ class _MissingLostPageState extends State<MissingLostPage> {
                           ),
                           const SizedBox(height: 20),
                           ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              submitReport();
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Please fill all fields')),
-                              );
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            foregroundColor: Colors.black,
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                submitReport();
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Please fill all fields')),
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.black,
+                            ),
+                            child: const Text('Submit Report'),
                           ),
-                          child: const Text('Submit Report'),
-                        ),
                         ],
                       ),
                     ),
@@ -362,7 +586,8 @@ class _MissingLostPageState extends State<MissingLostPage> {
     );
   }
 
-  Widget _buildCardWithRadioButton(BuildContext context, String text, String imagePath, String groupValue, void Function(String?) onChanged) {
+  Widget _buildCardWithRadioButton(BuildContext context, String text,
+      String imagePath, String groupValue, void Function(String?) onChanged) {
     return Expanded(
       child: Card(
         elevation: 5,
@@ -401,7 +626,8 @@ class _MissingLostPageState extends State<MissingLostPage> {
     );
   }
 
-  Widget _buildDropdownField(String label, List<String> items, {String? initialValue, void Function(String?)? onChanged}) {
+  Widget _buildDropdownField(String label, List<String> items,
+      {String? initialValue, void Function(String?)? onChanged}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: DropdownButtonFormField<String>(
@@ -455,7 +681,11 @@ class _MissingLostPageState extends State<MissingLostPage> {
     );
   }
 
-  Widget _buildDatePickerField(BuildContext context, String label, TextEditingController controller, {bool readOnly = false, Color? fillColor, String? Function(String?)? validator}) {
+  Widget _buildDatePickerField(
+      BuildContext context, String label, TextEditingController controller,
+      {bool readOnly = false,
+      Color? fillColor,
+      String? Function(String?)? validator}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextFormField(
@@ -481,44 +711,46 @@ class _MissingLostPageState extends State<MissingLostPage> {
     );
   }
 
-Widget _buildOtherCountryRadio(String groupValue, ValueChanged<String?> onChanged) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const SizedBox(height: 30),
-      const Text(
-        'Do you have passports of other countries?',
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
-      const SizedBox(height: 10),
-      RadioListTile<String>(
-        title: const Text("No, I don't have"),
-        value: "No, I don't have",
-        groupValue: groupValue,
-        onChanged: onChanged,
-      ),
-      RadioListTile<String>(
-        title: const Text("Yes, I have another passport"),
-        value: "Yes, I have another passport",
-        groupValue: groupValue,
-        onChanged: onChanged,
-      ),
-    ],
-  );
-}
-
-void _selectDate(BuildContext context, TextEditingController controller) async {
-  DateTime? picked = await showDatePicker(
-    context: context,
-    initialDate: DateTime.now(),
-    firstDate: DateTime(1900),
-    lastDate: DateTime(2101),
-  );
-
-  if (picked != null) {
-    setState(() {
-      controller.text = "${picked.toLocal()}".split(' ')[0];
-    });
+  Widget _buildOtherCountryRadio(
+      String groupValue, ValueChanged<String?> onChanged) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 30),
+        const Text(
+          'Do you have passports of other countries?',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 10),
+        RadioListTile<String>(
+          title: const Text("No, I don't have"),
+          value: "No, I don't have",
+          groupValue: groupValue,
+          onChanged: onChanged,
+        ),
+        RadioListTile<String>(
+          title: const Text("Yes, I have another passport"),
+          value: "Yes, I have another passport",
+          groupValue: groupValue,
+          onChanged: onChanged,
+        ),
+      ],
+    );
   }
-}
+
+  void _selectDate(
+      BuildContext context, TextEditingController controller) async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2101),
+    );
+
+    if (picked != null) {
+      setState(() {
+        controller.text = "${picked.toLocal()}".split(' ')[0];
+      });
+    }
+  }
 }
