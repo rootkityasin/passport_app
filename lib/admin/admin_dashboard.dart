@@ -4,6 +4,8 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pms_flutter_app/admin/admin_request.dart';
 import 'package:http/http.dart' as http;
 
+import '../login.dart';
+
 class AdminDashboard extends StatefulWidget {
   final String token;
   const AdminDashboard({required this.token, super.key});
@@ -61,89 +63,94 @@ class AdminDashboardState extends State<AdminDashboard> {
   }
 
   Widget _buildAnimatedCard(String title, String subtitle, IconData icon,
-    Color iconColor, VoidCallback onPressed,
-    {Color textColor = Colors.white}) {
-  bool isHovered = false; // Track hover state
+      Color iconColor, VoidCallback onPressed,
+      {Color textColor = Colors.white}) {
+    bool isHovered = false; // Track hover state
 
-  return StatefulBuilder(
-    builder: (BuildContext context, StateSetter setState) {
-      return MouseRegion(
-        onEnter: (_) {
-          setState(() {
-            isHovered = true;
-          });
-        },
-        onExit: (_) {
-          setState(() {
-            isHovered = false;
-          });
-        },
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 700),
-          transform: isHovered ? Matrix4.identity().scaled(1.04) : Matrix4.identity(),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.3), // Card background color
-            borderRadius: BorderRadius.circular(16.0),
-            border: Border.all(
-              width: 1.5,
-              color: Colors.white.withOpacity(0.3),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: iconColor.withOpacity(isHovered ? 0.8 : 0.5), // Shadow effect on hover
-                blurRadius: isHovered ? 20.0 : 0.5,
-                spreadRadius: isHovered ? 5.0 : 0.5,
+    return StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState) {
+        return MouseRegion(
+          onEnter: (_) {
+            setState(() {
+              isHovered = true;
+            });
+          },
+          onExit: (_) {
+            setState(() {
+              isHovered = false;
+            });
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 700),
+            transform: isHovered
+                ? Matrix4.identity().scaled(1.04)
+                : Matrix4.identity(),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.3), // Card background color
+              borderRadius: BorderRadius.circular(16.0),
+              border: Border.all(
+                width: 1.5,
+                color: Colors.white.withOpacity(0.3),
               ),
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(icon, color: iconColor, size: 35), // Icon size and color
-                    const SizedBox(width: 20), // Space between icon and title
-                    Expanded(
-                      child: Text(
-                        title, // Card title
-                        style: const TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.bold),
-                        softWrap: true,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                const Spacer(),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: onPressed,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF186343), // Button background color
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0), // Rounded corners
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 16.0, horizontal: 24.0),
-                      textStyle: const TextStyle(fontSize: 16),
-                    ),
-                    child: Text(
-                      subtitle,
-                      style: TextStyle(color: textColor),
-                    ),
-                  ),
+              boxShadow: [
+                BoxShadow(
+                  color: iconColor.withOpacity(
+                      isHovered ? 0.8 : 0.5), // Shadow effect on hover
+                  blurRadius: isHovered ? 20.0 : 0.5,
+                  spreadRadius: isHovered ? 5.0 : 0.5,
                 ),
               ],
             ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(icon,
+                          color: iconColor, size: 35), // Icon size and color
+                      const SizedBox(width: 20), // Space between icon and title
+                      Expanded(
+                        child: Text(
+                          title, // Card title
+                          style: const TextStyle(
+                              fontSize: 17, fontWeight: FontWeight.bold),
+                          softWrap: true,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  const Spacer(),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: onPressed,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color(0xFF186343), // Button background color
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(12.0), // Rounded corners
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16.0, horizontal: 24.0),
+                        textStyle: const TextStyle(fontSize: 16),
+                      ),
+                      child: Text(
+                        subtitle,
+                        style: TextStyle(color: textColor),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
-      );
-    },
-  );
-}
-
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -235,6 +242,8 @@ class AdminDashboardState extends State<AdminDashboard> {
               title: const Text('Logout Account'),
               onTap: () {
                 // Handle Logout tap
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()));
               },
             ),
           ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
+import '../login.dart';
+
 class PoliceDashboard extends StatefulWidget {
   final String token;
   const PoliceDashboard({required this.token, super.key});
@@ -114,6 +116,8 @@ class PoliceDashboardState extends State<PoliceDashboard> {
               title: const Text('Logout Account'),
               onTap: () {
                 // Handle Logout tap
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()));
               },
             ),
           ],
