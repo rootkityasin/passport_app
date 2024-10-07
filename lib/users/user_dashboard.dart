@@ -314,7 +314,8 @@ class _UserDashboardState extends State<UserDashboard> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const StatusPage()),
+                            builder: (context) =>
+                                StatusPage(token: widget.token)),
                       );
                     },
                   ),

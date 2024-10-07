@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
         '/apply': (context) => const ApplyPage(),
         '/reissue': (context) => const ReissuePage(),
         '/missing': (context) => const MissingLostPage(),
-        '/status': (context) => const StatusPage(),
+        '/status': (context) => const StatusPage(token: 'test_token'),
         '/setting': (context) => const SettingsPage(token: 'test_token'),
       },
     );

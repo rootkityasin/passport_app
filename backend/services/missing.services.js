@@ -1,5 +1,5 @@
 // services/missing.services.js
-const Report = require('../models/report.model'); // Update path to the correct model file
+const Report = require('../model/missing.model'); // Update path to the correct model file
 
 class ReportService {
   // Method to create a new report

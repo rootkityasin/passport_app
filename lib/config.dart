@@ -8,3 +8,4 @@ const policelogin = "${url}api/police/login";
 const userapply = "${url}api/users/apply";
 const userdata = "${url}api/users/getUser";
 const updatadata = "${url}api/users/updateUser";
+const recieveapplicationdata = "${url}api/users/my";
