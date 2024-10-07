@@ -61,56 +61,89 @@ class AdminDashboardState extends State<AdminDashboard> {
   }
 
   Widget _buildAnimatedCard(String title, String subtitle, IconData icon,
-      Color iconColor, VoidCallback onPressed,
-      {Color textColor = Colors.white}) {
-    return Card(
-      color: const Color(0xFFD9D9D9), // Set the card color
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+    Color iconColor, VoidCallback onPressed,
+    {Color textColor = Colors.white}) {
+  bool isHovered = false; // Track hover state
+
+  return StatefulBuilder(
+    builder: (BuildContext context, StateSetter setState) {
+      return MouseRegion(
+        onEnter: (_) {
+          setState(() {
+            isHovered = true;
+          });
+        },
+        onExit: (_) {
+          setState(() {
+            isHovered = false;
+          });
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 700),
+          transform: isHovered ? Matrix4.identity().scaled(1.04) : Matrix4.identity(),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.3), // Card background color
+            borderRadius: BorderRadius.circular(16.0),
+            border: Border.all(
+              width: 1.5,
+              color: Colors.white.withOpacity(0.3),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: iconColor.withOpacity(isHovered ? 0.8 : 0.5), // Shadow effect on hover
+                blurRadius: isHovered ? 20.0 : 0.5,
+                spreadRadius: isHovered ? 5.0 : 0.5,
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(icon, color: iconColor, size: 35), // Icon size
-                const SizedBox(width: 20), // Space between icon and title
-                Expanded(
-                  child: Text(
-                    title, // Card title
-                    style: const TextStyle(
-                        fontSize: 22, fontWeight: FontWeight.bold),
-                    softWrap: true,
+                Row(
+                  children: [
+                    Icon(icon, color: iconColor, size: 35), // Icon size and color
+                    const SizedBox(width: 20), // Space between icon and title
+                    Expanded(
+                      child: Text(
+                        title, // Card title
+                        style: const TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.bold),
+                        softWrap: true,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                const Spacer(),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: onPressed,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF186343), // Button background color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16.0, horizontal: 24.0),
+                      textStyle: const TextStyle(fontSize: 16),
+                    ),
+                    child: Text(
+                      subtitle,
+                      style: TextStyle(color: textColor),
+                    ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
-            const Spacer(), // Pushes the button to the bottom
-            Center(
-              child: ElevatedButton(
-                onPressed: onPressed, // Handle button press
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF186343), // Background color
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(12.0), // Rounded corners
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 16.0, horizontal: 24.0), // Increase padding
-                  textStyle:
-                      const TextStyle(fontSize: 16), // Increase font size
-                ),
-                child: Text(
-                  subtitle, // Card subtitle
-                  style: TextStyle(color: textColor), // Custom font color
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
-    );
-  }
+      );
+    },
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {

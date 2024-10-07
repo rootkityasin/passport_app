@@ -291,7 +291,7 @@ class _MissingLostPageState extends State<MissingLostPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:3000/api/reports/missing'),
+        Uri.parse('http://localhost:3000/api/missing'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(wrappedReportData),
       );

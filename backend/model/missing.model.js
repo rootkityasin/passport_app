@@ -1,4 +1,4 @@
-// models/report.model.js
+// model/report.model.js
 const mongoose = require('mongoose');
 
 const reportSchema = new mongoose.Schema({
@@ -9,13 +9,11 @@ const reportSchema = new mongoose.Schema({
   district: { type: String, required: true },
   policeStation: { type: String, required: true },
   reportedDate: { type: Date, required: true },
-  previousPassportNumber: { type: String, required: false },
-  dateOfIssue: { type: Date, required: false },
-  dateOfExpiration: { type: Date, required: false },
+  previousPassportNumber: { type: String },
+  dateOfIssue: { type: Date },
+  dateOfExpiration: { type: Date },
   unknownPreviousPassportData: { type: Boolean, required: true },
   otherCountryPassport: { type: String, required: true },
 }, { timestamps: true });
 
-const Report = mongoose.model('Report', reportSchema);
-
-module.exports = Report;
+module.exports = mongoose.model('Report', reportSchema);
