@@ -44,3 +44,13 @@ exports.getAllApplications = async (req, res, next) => {
         });
     }
 };
+
+exports.deleteApplication = async (req, res) => {
+    try {
+      const applicationId = req.params.id;
+      await Application.findByIdAndDelete(applicationId);
+      res.status(200).json({ success: true, message: 'Application deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ success: false, message: 'Failed to delete application' });
+    }
+  };

@@ -21,14 +21,12 @@ class AdminRequestState extends State<AdminRequest> {
   }
 
   Future<void> fetchApplications() async {
-    final response = await http
-        .get(Uri.parse('http://localhost:3000/api/admin/applications'));
+    final response = await http.get(Uri.parse('http://localhost:3000/api/admin/applications'));
 
     if (response.statusCode == 200) {
       final responseData = json.decode(response.body);
 
-      if (responseData is Map<String, dynamic> &&
-          responseData.containsKey('applications')) {
+      if (responseData is Map<String, dynamic> && responseData.containsKey('applications')) {
         setState(() {
           applications = responseData['applications'] as List<dynamic>;
         });
@@ -51,20 +49,15 @@ class AdminRequestState extends State<AdminRequest> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('All Requests'),
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            // Handle menu button press
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: () {
-              // Handle logout
-            },
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blue, Colors.purple],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
-        ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -100,95 +93,64 @@ class AdminRequestState extends State<AdminRequest> {
                         final fullName = personalInfo['fullName'];
                         final applicantId = application['_id'];
 
-                        return Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.blueGrey,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: const [
-                                BoxShadow(
-                                  blurRadius: 5,
-                                  spreadRadius: 1,
-                                  color: Colors.black26,
-                                ),
-                              ],
+                        return Container(
+                          margin: const EdgeInsets.symmetric(vertical: 8.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                            gradient: const LinearGradient(
+                              colors: [Colors.cyan, Colors.blue],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Container(
-                                        height: 50,
-                                        width: 50,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                        ),
-                                        child: const Icon(Icons.people),
-                                      ),
-                                      Text(
-                                        fullName,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 40),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Text(
-                                        applicantId,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 30),
-                                  Center(
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => Requestview(
-                                              application: application,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.green,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 12.0,
-                                          horizontal: 24.0,
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        "View Detail",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.blueAccent.withOpacity(0.4),
+                                blurRadius: 10.0,
+                                offset: const Offset(0, 5),
+                              ),
+                            ],
+                          ),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(16.0),
+                            leading: Container(
+                              padding: const EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: const Icon(
+                                Icons.person,
+                                color: Colors.blueAccent,
+                                size: 40,
                               ),
                             ),
+                            title: Text(
+                              fullName,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                            subtitle: Text(
+                              'Applicant ID: $applicantId',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.white70,
+                              ),
+                            ),
+                            trailing: const Icon(
+                              Icons.arrow_forward_ios,
+                              color: Colors.white70,
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Requestview(application: application),
+                                ),
+                              );
+                            },
                           ),
                         );
                       },

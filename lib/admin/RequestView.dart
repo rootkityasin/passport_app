@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Requestview extends StatefulWidget {
   final dynamic application; // Accepting application details
@@ -11,12 +13,96 @@ class Requestview extends StatefulWidget {
 
 class RequestviewState extends State<Requestview> {
   int _selectedIndex = 0;
+  final TextEditingController _declineReasonController = TextEditingController();
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  Future<void> _deleteApplication(String applicationId) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('http://localhost:3000/api/apply/$applicationId'),
+      );
+
+      if (response.statusCode == 200) {
+        Navigator.of(context).pop(); // Close the dialog
+        Navigator.of(context).pop(); // Go back to the previous page
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Application deleted successfully!')),
+        );
+      } else {
+        throw Exception('Failed to delete application');
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $error')),
+      );
+    }
   }
+
+  void _showAcceptConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Accept'),
+          content: const Text('Are you sure you want to accept this request?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                _deleteApplication(widget.application['_id']); // Delete application
+              },
+              child: const Text('Confirm'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDeclineReasonDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Decline Reason'),
+          content: TextField(
+            controller: _declineReasonController,
+            decoration: const InputDecoration(
+              hintText: 'Enter reason for decline',
+            ),
+            maxLines: 3,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                _deleteApplication(widget.application['_id']); // Delete application
+              },
+              child: const Text('Done'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _declineReasonController.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +123,8 @@ class RequestviewState extends State<Requestview> {
     final gender = personalInfo['gender'] ?? 'N/A';
     final citizenType = personalInfo['citizenType'] ?? 'N/A';
     final religion = personalInfo['religion'] ?? 'N/A';
-    final dualCitizenshipStatus =
-        personalInfo['dualCitizenshipStatus'] ?? false;
-    final otherCitizenshipCountry =
-        personalInfo['otherCitizenshipCountry'] ?? 'N/A';
+    final dualCitizenshipStatus = personalInfo['dualCitizenshipStatus'] ?? false;
+    final otherCitizenshipCountry = personalInfo['otherCitizenshipCountry'] ?? 'N/A';
     final foreignPassportNo = personalInfo['foreignPassportNo'] ?? 'N/A';
     final spouseName = personalInfo['spouseName'] ?? 'N/A';
     final spouseNationality = personalInfo['spouseNationality'] ?? 'N/A';
@@ -70,20 +154,15 @@ class RequestviewState extends State<Requestview> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Application Detail'),
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            // Handle menu button press
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: () {
-              // Handle logout
-            },
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blue, Colors.purple],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
-        ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -91,190 +170,63 @@ class RequestviewState extends State<Requestview> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Full Name: $fullName',
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-              Text('Given Name: $givenName',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Surname: $surname', style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Date of Birth: $dateOfBirth',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text(
-                  'Country of Birth: ${countryOfBirth.isEmpty ? 'N/A' : countryOfBirth}',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Nationality: $nationality',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Place of Birth: $placeOfBirth',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Gender: $gender', style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Citizen Type: $citizenType',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Religion: $religion', style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text(
-                  'Dual Citizenship Status: ${dualCitizenshipStatus ? "Yes" : "No"}',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text(
-                  'Other Citizenship Country: ${otherCitizenshipCountry.isEmpty ? 'N/A' : otherCitizenshipCountry}',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text(
-                  'Foreign Passport No: ${foreignPassportNo.isEmpty ? 'N/A' : foreignPassportNo}',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Spouse Name: ${spouseName.isEmpty ? 'N/A' : spouseName}',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text(
-                  'Spouse Nationality: ${spouseNationality.isEmpty ? 'N/A' : spouseNationality}',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text(
-                  'Spouse Profession: ${spouseProfession.isEmpty ? 'N/A' : spouseProfession}',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text(
-                  'Spouse Passport No: ${spousePassportNo.isEmpty ? 'N/A' : spousePassportNo}',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text(
-                  'Spouse National ID: ${spouseNationalId.isEmpty ? 'N/A' : spouseNationalId}',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('National ID: $nationalId',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Birth Certificate No: $birthCertificateNo',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Profession: $profession',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Contact No: $contactNo',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Email: $email', style: const TextStyle(fontSize: 16)),
+              _buildInfoCard(Icons.person, 'Full Name', fullName, Colors.blue),
+              _buildInfoCard(Icons.assignment_ind, 'Given Name', givenName, Colors.teal),
+              _buildInfoCard(Icons.person_outline, 'Surname', surname, Colors.orange),
+              _buildInfoCard(Icons.cake, 'Date of Birth', dateOfBirth, Colors.red),
+              _buildInfoCard(Icons.flag, 'Country of Birth', countryOfBirth, Colors.deepPurple),
+              _buildInfoCard(Icons.location_on, 'Place of Birth', placeOfBirth, Colors.green),
+              _buildInfoCard(Icons.male, 'Gender', gender, Colors.pink),
+              _buildInfoCard(Icons.perm_identity, 'Citizen Type', citizenType, Colors.cyan),
+              _buildInfoCard(Icons.account_balance, 'Nationality', nationality, Colors.indigo),
+              _buildInfoCard(Icons.security, 'Dual Citizenship Status', dualCitizenshipStatus ? 'Yes' : 'No', Colors.brown),
+              _buildInfoCard(Icons.public, 'Other Citizenship Country', otherCitizenshipCountry, Colors.lightBlue),
+              _buildInfoCard(Icons.email, 'Email', email, Colors.amber),
               const SizedBox(height: 20),
               const Text(
                 'Present Address',
-                style:
-                    TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.deepPurple),
               ),
               const SizedBox(height: 10),
-              Text('District: $districtPresent',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Police Station: $policeStationPresent',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Post Office: $postOfficePresent',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Post Code: $postCodePresent',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('City: $cityPresent', style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Road: $roadPresent', style: const TextStyle(fontSize: 16)),
+              _buildInfoCard(Icons.location_city, 'District', districtPresent, Colors.deepOrange),
+              _buildInfoCard(Icons.local_police, 'Police Station', policeStationPresent, Colors.red),
+              _buildInfoCard(Icons.markunread_mailbox, 'Post Office', postOfficePresent, Colors.green),
+              _buildInfoCard(Icons.mail_outline, 'Post Code', postCodePresent, Colors.purple),
+              _buildInfoCard(Icons.apartment, 'City', cityPresent, Colors.blueAccent),
+              _buildInfoCard(Icons.add_road, 'Road', roadPresent, Colors.blueGrey),
               const SizedBox(height: 20),
               const Text(
                 'Permanent Address',
-                style:
-                    TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.deepPurple),
               ),
               const SizedBox(height: 10),
-              Text('District: $districtPermanent',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Police Station: $policeStationPermanent',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Post Office: $postOfficePermanent',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Post Code: $postCodePermanent',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('City: $cityPermanent',
-                  style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
-              Text('Road: $roadPermanent',
-                  style: const TextStyle(fontSize: 16)),
+              _buildInfoCard(Icons.location_city, 'District', districtPermanent, Colors.deepOrange),
+              _buildInfoCard(Icons.local_police, 'Police Station', policeStationPermanent, Colors.red),
+              _buildInfoCard(Icons.markunread_mailbox, 'Post Office', postOfficePermanent, Colors.green),
+              _buildInfoCard(Icons.mail_outline, 'Post Code', postCodePermanent, Colors.purple),
+              _buildInfoCard(Icons.apartment, 'City', cityPermanent, Colors.blueAccent),
+              _buildInfoCard(Icons.add_road, 'Road', roadPermanent, Colors.blueGrey),
               const SizedBox(height: 30),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Handle button press
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    onPressed: _showAcceptConfirmationDialog,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12.0,
-                      horizontal: 24.0,
-                    ),
+                    child: const Text('Accept'),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 12.0,
-                                  horizontal: 24.0,
-                                ),
-                              ),
-                              child: const Text(
-                                "Accept",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 12.0,
-                                  horizontal: 24.0,
-                                ),
-                              ),
-                              child: const Text(
-                                "Decline",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                  ElevatedButton(
+                    onPressed: _showDeclineReasonDialog,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                     ),
+                    child: const Text('Decline'),
                   ),
-                ),
+                ],
               ),
             ],
           ),
@@ -285,69 +237,68 @@ class RequestviewState extends State<Requestview> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: _selectedIndex == 0
-                ? Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.green,
-                        ),
-                      ),
-                      const Icon(Icons.home, color: Colors.black),
-                    ],
-                  )
+                ? _buildBottomNavIcon(Icons.home)
                 : const Icon(Icons.home, color: Colors.black),
             label: '',
           ),
           BottomNavigationBarItem(
             icon: _selectedIndex == 1
-                ? Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.green,
-                        ),
-                      ),
-                      const Icon(Icons.search, color: Colors.black),
-                    ],
-                  )
+                ? _buildBottomNavIcon(Icons.search)
                 : const Icon(Icons.search, color: Colors.black),
             label: '',
           ),
           BottomNavigationBarItem(
             icon: _selectedIndex == 2
-                ? Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.green,
-                        ),
-                      ),
-                      const Icon(Icons.account_circle, color: Colors.black),
-                    ],
-                  )
+                ? _buildBottomNavIcon(Icons.account_circle)
                 : const Icon(Icons.account_circle, color: Colors.black),
             label: '',
           ),
         ],
         currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        
         selectedItemColor: Colors.green,
         unselectedItemColor: Colors.grey,
         showSelectedLabels: false,
         showUnselectedLabels: false,
       ),
+    );
+  }
+
+  Widget _buildInfoCard(IconData icon, String label, String value, Color color) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: color.withOpacity(0.2),
+          child: Icon(icon, color: color, size: 30),
+        ),
+        title: Text(
+          label,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(value),
+      ),
+    );
+  }
+
+  Widget _buildBottomNavIcon(IconData icon) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+          width: 40,
+          height: 40,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.green,
+          ),
+        ),
+        Icon(icon, color: Colors.black),
+      ],
     );
   }
 }

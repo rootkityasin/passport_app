@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pms_flutter_app/admin/admin_request.dart';
+import 'package:pms_flutter_app/admin/AdminMissingRequest.dart';
+
 import 'package:http/http.dart' as http;
 
 import '../login.dart';
@@ -19,13 +21,14 @@ class AdminDashboardState extends State<AdminDashboard> {
   int totalApplicants = 0;
   List<dynamic> applications = [];
 
-  @override
-  void initState() {
-    super.initState();
-    Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
-    aid = jwtDecodedToken['aid'];
-    fetchApplications();
-  }
+@override
+void initState() {
+  super.initState();
+  Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
+  aid = jwtDecodedToken['aid'];
+  fetchApplications();
+  fetchMissingRequests();
+}
 
   Future<void> fetchApplications() async {
     try {
@@ -62,7 +65,33 @@ class AdminDashboardState extends State<AdminDashboard> {
     });
   }
 
-  Widget _buildAnimatedCard(String title, String subtitle, IconData icon,
+  int totalMissingRequests = 0;
+
+  Future<void> fetchMissingRequests() async {
+  try {
+    final response = await http.get(Uri.parse('http://localhost:3000/api/missing'));
+
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+
+      if (responseData is Map<String, dynamic> && responseData.containsKey('reports')) {
+        setState(() {
+          totalMissingRequests = responseData['reports'].length;
+        });
+        print('Total missing requests: $totalMissingRequests');
+      } else {
+        throw Exception('Unexpected JSON format');
+      }
+    } else {
+      throw Exception('Failed to load missing requests');
+    }
+  } catch (e) {
+    print('Error fetching missing requests: $e');
+  }
+}
+
+
+ Widget _buildAnimatedCard(String title, String subtitle, IconData icon,
       Color iconColor, VoidCallback onPressed,
       {Color textColor = Colors.white}) {
     bool isHovered = false; // Track hover state
@@ -301,12 +330,17 @@ class AdminDashboardState extends State<AdminDashboard> {
                     },
                   ),
                   _buildAnimatedCard(
-                    "Missing/Lost", // Card title
-                    "Report Lost or Stolen", // Card subtitle
-                    Icons.report, // Card icon
-                    Colors.red, // Icon color
+                    "Missing/Lost ($totalMissingRequests)", 
+                    "Report Lost or Stolen", 
+                    Icons.report, 
+                    Colors.red, 
                     () {
-                      // Navigate to Missing/Lost Page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminMissingRequest(),
+                        ),
+                      );
                     },
                   ),
                   _buildAnimatedCard(

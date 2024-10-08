@@ -4,13 +4,13 @@ async function connectDB() {
     try {
         await mongoose.connect('mongodb+srv://parvez:12345@pms2024.prban7k.mongodb.net/pms', {
            
-            serverSelectionTimeoutMS: 10000, // 10 seconds timeout
-            socketTimeoutMS: 45000, // 45 seconds socket timeout
+            serverSelectionTimeoutMS: 10000,
+            socketTimeoutMS: 45000, 
         });
         console.log("MongoDB Connected Successfully");
     } catch (error) {
         console.error("MongoDB Connection Error: ", error);
-        process.exit(1); // Exit process with failure
+        process.exit(1);
     }
 }
 
