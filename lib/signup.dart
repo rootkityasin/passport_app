@@ -46,19 +46,6 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
-  // Future login() async {
-  //   var res = await http.post(
-  //       Uri.parse("http://localhost:8000/api/users/login"),
-  //       headers: <String, String>{
-  //         'Context-Type': 'application/json;charSet=UTF-8'
-  //       },
-  //       body: <String, String>{
-  //         'email': user.email,
-  //         'password': user.password
-  //       });
-  //   print(res.body);
-  // }
-
   Future<void> _registerUser() async {
     if (_formKey.currentState!.validate()) {
       final user = {
@@ -70,6 +57,7 @@ class _SignUpPageState extends State<SignUpPage> {
         "nid": _nidController.text,
         "password": _passwordController.text,
       };
+
 
       try {
         final response = await http.post(
@@ -181,6 +169,8 @@ class _SignUpPageState extends State<SignUpPage> {
         onTap: () {
           setState(() {
             _selectedRole = role;
+                print("Selected role: $_selectedRole"); // Debugging output
+
           });
         },
         child: Column(

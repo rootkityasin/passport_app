@@ -1,6 +1,5 @@
-// index.js
 const app = require('./app');
-const db = require('./config/db'); // Ensure your database connection is correctly set up
+const db = require('./config/db'); 
 const PORT = 3000;
 
 app.get('/', (req, res) => {

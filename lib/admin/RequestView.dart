@@ -12,7 +12,7 @@ class Requestview extends StatefulWidget {
 }
 
 class RequestviewState extends State<Requestview> {
-  int _selectedIndex = 0;
+  final int _selectedIndex = 0;
   final TextEditingController _declineReasonController = TextEditingController();
 
   Future<void> _deleteApplication(String applicationId) async {

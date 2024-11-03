@@ -102,7 +102,7 @@ class AdminMissingRequestState extends State<AdminMissingRequest> {
                           children: [
                             Row(
                               children: [
-                                Icon(Icons.report, color: Colors.white, size: 40),
+                                const Icon(Icons.report, color: Colors.white, size: 40),
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: Text(

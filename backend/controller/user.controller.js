@@ -18,7 +18,7 @@ exports.register = async (req, res, next) => {
     } catch (error) {
         res.status(500).json({ status: false, message: error.message });
     }
-}
+};
 
 exports.login = async (req, res, next) => {
     try {

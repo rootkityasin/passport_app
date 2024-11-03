@@ -113,69 +113,66 @@ class _ApplyPageState extends State<ApplyPage> {
     super.dispose();
   }
 
-  Future<void> submitApplication() async {
-    
-    final applicationData = {
-      'personalInfo': {
-        'fullName': _fullNameController.text,
-        'givenName': _givenNameController.text,
-        'surname': _surnameController.text,
-        'dateOfBirth': _dateOfBirthController.text,
-        'countryOfBirth': selectedCountry ?? 'Bangladesh',
-        'nationality' : _nationalityController.text,
-        'placeOfBirth': selectedPlaceOfBirth,
-        'gender': selectedGender,
-        'citizenType': selectedCitizenType,
-        'religion': selectedReligion,
-        'dualCitizenshipStatus': hasDualCitizenship,
-        'otherCitizenshipCountry': selectedotherCitizenship,
-        'foreignPassportNo': _foreignPassportNoController.text,
-        'maritalStatus': isMarried,
-        'spouseName': _spouseNameController.text,
-        'spouseNationality': _spouseNationalityController.text,
-        'spouseProfession': _spouseProfessionController.text,
-        'spousePassportNo': _spousePassportNoController.text,
-        'spouseNationalId': _spouseNationalIdController.text,
-
-        'nationalId': _nationalIdController.text,
-        'birthCertificateNo': _birthCertificateController.text,
-        'profession': _professionController.text,
-        'contactNo': _contactNoController.text,
-        'email': _emailController.text,
-      },
-      'presentAddress': {
-        'district': _presentDistrictController.text,
-        'policeStation': _presentPoliceStationController.text,
-        'postOffice': _presentPostOfficeController.text,
-        'postCode': _presentPostalCodeController.text,
-        'city': _presentCityVillageHouseController.text,
-        'road': _presentRoadBlockSectorController.text,
-      },
-      'permanentAddress': {
-        'district': _permanentDistrictController.text,
-        'policeStation': _permanentPoliceStationController.text,
-        'postOffice': _permanentPostOfficeController.text,
-        'postCode': _permanentPostalCodeController.text,
-        'city': _permanentCityVillageHouseController.text,
-        'road': _permanentRoadBlockSectorController.text,
-      },
-    };
+Future<void> submitApplication() async {
+  final applicationData = {
+    'personalInfo': {
+      'fullName': _fullNameController.text,
+      'givenName': _givenNameController.text,
+      'surname': _surnameController.text,
+      'dateOfBirth': _dateOfBirthController.text,
+      'countryOfBirth': selectedCountry ?? 'Bangladesh',
+      'nationality': _nationalityController.text,
+      'placeOfBirth': selectedPlaceOfBirth,
+      'gender': selectedGender,
+      'citizenType': selectedCitizenType,
+      'religion': selectedReligion,
+      'dualCitizenshipStatus': hasDualCitizenship,
+      'otherCitizenshipCountry': selectedotherCitizenship,
+      'foreignPassportNo': _foreignPassportNoController.text,
+      'maritalStatus': isMarried,
+      'spouseName': _spouseNameController.text,
+      'spouseNationality': _spouseNationalityController.text,
+      'spouseProfession': _spouseProfessionController.text,
+      'spousePassportNo': _spousePassportNoController.text,
+      'spouseNationalId': _spouseNationalIdController.text,
+      'nationalId': _nationalIdController.text,
+      'birthCertificateNo': _birthCertificateController.text,
+      'profession': _professionController.text,
+      'contactNo': _contactNoController.text,
+      'email': _emailController.text,
+    },
+    'presentAddress': {
+      'district': _presentDistrictController.text,
+      'policeStation': _presentPoliceStationController.text,
+      'postOffice': _presentPostOfficeController.text,
+      'postCode': _presentPostalCodeController.text,
+      'city': _presentCityVillageHouseController.text,
+      'road': _presentRoadBlockSectorController.text,
+    },
+    'permanentAddress': {
+      'district': _permanentDistrictController.text,
+      'policeStation': _permanentPoliceStationController.text,
+      'postOffice': _permanentPostOfficeController.text,
+      'postCode': _permanentPostalCodeController.text,
+      'city': _permanentCityVillageHouseController.text,
+      'road': _permanentRoadBlockSectorController.text,
+    },
+  };
 
   final wrappedApplicationData = {
     'applicationData': applicationData,
   };
 
-  
-    try {
-      final response = await http.post(
-        Uri.parse('http://localhost:3000/api/users/apply'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(wrappedApplicationData),
-      );
+  try {
+    final response = await http.post(
+      Uri.parse('http://localhost:3000/api/users/apply'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(wrappedApplicationData),
+    );
 
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-        final wrappedResponse = {
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      final wrappedResponse = {
           'status': true,
           'success': 'Applied successfully',
           'apply': responseData,
@@ -185,6 +182,8 @@ class _ApplyPageState extends State<ApplyPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Application submitted successfully!')),
       );
+
+
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -199,14 +198,32 @@ class _ApplyPageState extends State<ApplyPage> {
         ),
       );
     } else {
-        print('Failed to apply: ${response.statusCode}');
-        print('Response body: ${response.body}');
+      print('Failed to apply: ${response.statusCode}');
+      print('Response body: ${response.body}');
         print(wrappedApplicationData);
-      }
-    } catch (e) {
-      print('Error: $e');
-    } 
+    }
+  } catch (e) {
+    print('Error: $e');
+  }
 }
+
+Future<void> verifyApplicationId(String applicationId) async {
+  final url = Uri.parse('http://localhost:3000/api/apply/getApplicationId/$applicationId');
+
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    if (data['success']) {
+      print('Application ID $applicationId recorded on blockchain');
+    } else {
+      print('Application ID $applicationId not found on blockchain');
+    }
+  } else {
+    print('Failed to verify application ID');
+  }
+}
+
 
 bool _validatePersonalInfo() {
   return _fullNameController.text.isNotEmpty &&
